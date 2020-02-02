@@ -15,7 +15,7 @@ namespace sa
 
     Scene(sa::ResourceLibrary& _resource_library);
 
-    bool isActive() const;
+    virtual bool isActive() const;
     
     virtual void control(const sf::Event& _event) = 0;
     virtual void process(const float _dt) = 0;
@@ -25,13 +25,7 @@ namespace sa
 
     virtual ~Scene();
 
-  protected:
-
-    void disable();
-
   private:
-
-    bool active;
 
     sa::ResourceLibrary& resource_library;
 
