@@ -1,11 +1,10 @@
 #include "ResourceLibrary.hpp"
 
-const std::string sa::ResourceLibrary::TEXTURE_PATH = "textures/";
-const std::string sa::ResourceLibrary::DEFAULT_TEXTURE_NAME = "Default.bmp";
-
 sa::ResourceLibrary::ResourceLibrary()
+  :
+  TEXTURE_PATH{"textures/"},
+  DEFAULT_TEXTURE_NAME{ "Default.bmp" }
 {
-  //sf::RenderWindow render_window(sf::VideoMode(640, 480), "123");
   sf::Texture texture;
   if (texture.loadFromFile(TEXTURE_PATH + DEFAULT_TEXTURE_NAME) == true)
   {

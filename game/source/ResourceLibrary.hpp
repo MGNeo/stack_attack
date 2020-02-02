@@ -16,8 +16,8 @@ namespace sa
   private:
     std::map<std::string, sf::Texture> textures;
 
-    static const std::string TEXTURE_PATH;
-    static const std::string DEFAULT_TEXTURE_NAME;
+    const std::string TEXTURE_PATH;
+    const std::string DEFAULT_TEXTURE_NAME;
   };
 }
 

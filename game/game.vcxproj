@@ -144,13 +144,17 @@
   <ItemGroup>
     <ClCompile Include="source\CrashReporter.cpp" />
     <ClCompile Include="source\Game.cpp" />
+    <ClCompile Include="source\LevelScene.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\ResourceLibrary.cpp" />
+    <ClCompile Include="source\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CrashReporter.hpp" />
     <ClInclude Include="source\Game.hpp" />
+    <ClInclude Include="source\LevelScene.hpp" />
     <ClInclude Include="source\ResourceLibrary.hpp" />
+    <ClInclude Include="source\Scene.hpp" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
