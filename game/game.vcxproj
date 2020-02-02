@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\CrashReporter.cpp" />
+    <ClCompile Include="source\Drawer.cpp" />
     <ClCompile Include="source\Game.cpp" />
     <ClCompile Include="source\LevelScene.cpp" />
     <ClCompile Include="source\main.cpp" />
@@ -151,6 +152,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\CrashReporter.hpp" />
+    <ClInclude Include="source\Drawer.hpp" />
     <ClInclude Include="source\Game.hpp" />
     <ClInclude Include="source\LevelScene.hpp" />
     <ClInclude Include="source\ResourceLibrary.hpp" />
