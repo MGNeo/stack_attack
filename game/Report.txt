@@ -1,0 +1,13 @@
+[120 1 2 0 39 5] Shit happened.
+[120 1 1 21 41 40] Shit happened.
+[2020 1 2 0 43 11] Shit happened.
+[2/1/2020 0;43;44] Shit happened.
+[2/1/2020___0:44:55] Shit happened.
+[2/1/2020-0:45:17] Shit happened.
+[2/1/2020,0:45:38] Shit happened.
+[2d/1m/2020y,0h:46m:31s] Shit happened.
+[2020y/1m/2d,0h:47m:55s] Shit happened.
+[2020y/1m/2d,0h:49m:10s] Unknown exception was detected.
+[2020y/1m/2d,1h:34m:7s] sa::ResourceLibrary::ResourceLibrary(), default texture can't be loaded.
+[2020y/1m/2d,1h:58m:37s] sa::ResourceLibrary::ResourceLibrary(), default texture can't be loaded.
+[2020y/1m/2d,2h:28m:10s] sa::ResourceLibrary::ResourceLibrary(), default texture can't be loaded.

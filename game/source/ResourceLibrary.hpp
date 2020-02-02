@@ -1,0 +1,23 @@
+#pragma once
+
+#include <SFML/Graphics.hpp>
+
+#include <map>
+#include <string>
+
+namespace sa
+{
+  class ResourceLibrary
+  {
+  public:
+    ResourceLibrary();
+    sf::Texture& getTexture(const std::string& _name);
+    //sf::Font& getFont(const std::string& _name);
+  private:
+    std::map<std::string, sf::Texture> textures;
+
+    static const std::string TEXTURE_PATH;
+    static const std::string DEFAULT_TEXTURE_NAME;
+  };
+}
+
