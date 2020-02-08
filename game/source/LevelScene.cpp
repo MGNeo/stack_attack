@@ -3,7 +3,8 @@
 sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
-  level_resources{ resource_library }
+  level_resources{ resource_library },
+  field{ 13u, 10u }
 {
 }
 

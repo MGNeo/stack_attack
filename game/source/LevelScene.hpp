@@ -2,6 +2,7 @@
 
 #include <Scene.hpp>
 #include <LevelResources.hpp>
+#include <Field.hpp>
 
 namespace sa
 {
@@ -20,6 +21,9 @@ namespace sa
   private:
 
     LevelResources level_resources;
+
+    Field field;
+
 
   };
 }
