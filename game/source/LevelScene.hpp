@@ -1,6 +1,7 @@
 #pragma once
 
-#include "Scene.hpp"
+#include <Scene.hpp>
+#include <LevelResources.hpp>
 
 namespace sa
 {
@@ -8,13 +9,17 @@ namespace sa
   {
   public:
 
-    LevelScene(sa::ResourceLibrary& _resource_library);
+    LevelScene(ResourceLibrary& _resource_library);
 
     void control(const sf::Event& _event) override;
     void process(const float _dt) override;
-    void draw(const sa::Drawer& _drawer) const override;
+    void draw(const Drawer& _drawer) const override;
 
-    virtual Uptr getNextScene() override;
+    Uptr getNextScene() override;
+
+  private:
+
+    LevelResources level_resources;
 
   };
 }

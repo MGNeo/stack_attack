@@ -1,4 +1,4 @@
-#include "ResourceLibrary.hpp"
+#include <ResourceLibrary.hpp>
 
 sa::ResourceLibrary::ResourceLibrary()
   :

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "ResourceLibrary.hpp"
+#include <ResourceLibrary.hpp>
 
 namespace sa
 {
@@ -23,7 +23,7 @@ namespace sa
     // otherwise sf::Texture::Texture(const sf::Texutre&) has error.
     // Perhaps, it's bug.
     sf::RenderWindow render_window;
-    sa::ResourceLibrary resource_library;
+    ResourceLibrary resource_library;
 
   };
 }

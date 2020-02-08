@@ -1,4 +1,4 @@
-#include "CrashReporter.hpp"
+#include <CrashReporter.hpp>
 
 #include <fstream>
 #include <ctime>

@@ -1,7 +1,7 @@
 #include <SFML/Graphics.hpp>
 
-#include "Game.hpp"
-#include "LevelScene.hpp"
+#include <Game.hpp>
+#include <LevelScene.hpp>
 
 sa::Game::Game()
   :
@@ -11,9 +11,9 @@ sa::Game::Game()
 
 void sa::Game::play()
 {
-  sa::Scene::Uptr current_scene = std::make_unique<sa::LevelScene>(resource_library);
+  Scene::Uptr current_scene = std::make_unique<LevelScene>(resource_library);
 
-  const sa::Drawer drawer{ render_window };
+  const Drawer drawer{ render_window };
 
   sf::Clock clock;
   float accumulated_dt = 0.f;
@@ -45,7 +45,12 @@ void sa::Game::play()
       }
 
       current_scene->process(normalized_dt);
+
+      render_window.clear();
+
       current_scene->draw(drawer);
+
+      render_window.display();
     }
 
     sa::Scene::Uptr next_scene = current_scene->getNextScene();

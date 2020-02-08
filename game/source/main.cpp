@@ -1,7 +1,7 @@
 #include <stdexcept>
 
-#include "Game.hpp"
-#include "CrashReporter.hpp"
+#include <Game.hpp>
+#include <CrashReporter.hpp>
 
 int main(int argc, char** argv)
 {

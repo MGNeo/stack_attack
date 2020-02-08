@@ -2,8 +2,8 @@
 
 #include <SFML/Window.hpp>
 
-#include "ResourceLibrary.hpp"
-#include "Drawer.hpp"
+#include <ResourceLibrary.hpp>
+#include <Drawer.hpp>
 
 namespace sa
 {
@@ -13,21 +13,21 @@ namespace sa
 
     using Uptr = std::unique_ptr<Scene>;
 
-    Scene(sa::ResourceLibrary& _resource_library);
+    Scene(ResourceLibrary& _resource_library);
 
     virtual bool isActive() const;
     
     virtual void control(const sf::Event& _event) = 0;
     virtual void process(const float _dt) = 0;
-    virtual void draw(const sa::Drawer& _drawer) const = 0;
+    virtual void draw(const Drawer& _drawer) const = 0;
     
     virtual Uptr getNextScene() = 0;
 
     virtual ~Scene();
 
-  private:
+  protected:
 
-    sa::ResourceLibrary& resource_library;
+    ResourceLibrary& resource_library;
 
   };
 }

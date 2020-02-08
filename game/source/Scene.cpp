@@ -1,6 +1,6 @@
-#include "Scene.hpp"
+#include <Scene.hpp>
 
-sa::Scene::Scene(sa::ResourceLibrary& _resource_library)
+sa::Scene::Scene(ResourceLibrary& _resource_library)
   :
   resource_library{ _resource_library }
 {

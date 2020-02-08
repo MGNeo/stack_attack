@@ -12,7 +12,6 @@ namespace sa
   public:
     ResourceLibrary();
     sf::Texture& getTexture(const std::string& _name);
-    //sf::Font& getFont(const std::string& _name);
   private:
     std::map<std::string, sf::Texture> textures;
 
