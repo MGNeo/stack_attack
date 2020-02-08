@@ -101,3 +101,43 @@ void sa::Stepper::toDown()
 
   progress = 0.f;
 }
+
+size_t sa::Stepper::getPreviousX() const
+{
+  return previous_x;
+}
+
+size_t sa::Stepper::getPreviousY() const
+{
+  return previous_y;
+}
+
+size_t sa::Stepper::getNextX() const
+{
+  return next_x;
+}
+
+size_t sa::Stepper::getNextY() const
+{
+  return next_y;
+}
+
+float sa::Stepper::getX() const
+{
+  if (previous_x < next_x)
+  {
+    return previous_x + progress;
+  } else {
+    return previous_x - progress;
+  }
+}
+
+float sa::Stepper::getY() const
+{
+  if (previous_y < next_y)
+  {
+    return previous_y + progress;
+  } else {
+    return previous_y - progress;
+  }
+}

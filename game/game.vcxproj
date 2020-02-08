@@ -142,6 +142,7 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\Stepper.cpp" />
     <ClCompile Include="source\Cell.cpp" />
     <ClCompile Include="source\CrashReporter.cpp" />
@@ -155,6 +156,7 @@
     <ClCompile Include="source\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\Stepper.hpp" />
     <ClInclude Include="source\Cell.hpp" />
     <ClInclude Include="source\CrashReporter.hpp" />

@@ -3,6 +3,7 @@
 #include <Scene.hpp>
 #include <LevelResources.hpp>
 #include <Field.hpp>
+#include <Player.hpp>
 
 namespace sa
 {
@@ -24,6 +25,7 @@ namespace sa
 
     Field field;
 
+    Player player;
 
   };
 }

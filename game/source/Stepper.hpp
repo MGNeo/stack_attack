@@ -17,6 +17,15 @@ namespace sa
     void toUp();
     void toDown();
 
+    size_t getPreviousX() const;
+    size_t getPreviousY() const;
+
+    size_t getNextX() const;
+    size_t getNextY() const;
+
+    float getX() const;
+    float getY() const;
+
   private:
 
     static constexpr float MIN_PROGRESS = 0.f;
