@@ -34,7 +34,7 @@ void sa::Stepper::stepToLeft()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToLeft(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToLeft(), isReadyToStep() == false");
   }
 
   previous_x = next_x;
@@ -52,7 +52,7 @@ void sa::Stepper::stepToRight()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToRight(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToRight(), isReadyToStep() == false");
   }
 
   previous_x = next_x;
@@ -70,7 +70,7 @@ void sa::Stepper::stepToUp()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToUp(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToUp(), isReadyToStep() == false");
   }
 
   previous_x = next_x;
@@ -88,7 +88,7 @@ void sa::Stepper::stepToDown()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToDown(), isDown() == false");
+    throw std::logic_error("sa::Stepper::stepToDown(), isReadyToStep() == false");
   }
 
   previous_x = next_x;
