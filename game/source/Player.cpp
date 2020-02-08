@@ -2,19 +2,19 @@
 
 sa::Player::Player(const size_t _x, const size_t _y)
   :
-  stepper{ _x, _y }
+  Stepper{ _x, _y }
 {
 }
 
-sa::Stepper& sa::Player::getStepper()
+void sa::Player::progress(const float _dt)
 {
-  return stepper;
+  addProgress(_dt);
 }
 
 void sa::Player::draw(const Drawer& _drawer) const
 {
   sf::CircleShape circle;
-  circle.setRadius(32);
-  circle.setPosition(stepper.getX() * 32, stepper.getY() * 32);
+  circle.setRadius(16);
+  circle.setPosition(getX() * 32.f, getY() * 32.f);
   _drawer.draw(circle);
 }

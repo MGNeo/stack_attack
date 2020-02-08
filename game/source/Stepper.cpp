@@ -20,7 +20,7 @@ void sa::Stepper::addProgress(const float _progress)
   }
 }
 
-bool sa::Stepper::isReady() const
+bool sa::Stepper::isReadyToStep() const
 {
   if (progress == MAX_PROGRESS)
   {
@@ -30,11 +30,11 @@ bool sa::Stepper::isReady() const
   }
 }
 
-void sa::Stepper::toLeft()
+void sa::Stepper::stepToLeft()
 {
-  if (isReady() == false)
+  if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::toLeft(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToLeft(), isReady() == false");
   }
 
   previous_x = next_x;
@@ -48,11 +48,11 @@ void sa::Stepper::toLeft()
   progress = 0.f;
 }
 
-void sa::Stepper::toRight()
+void sa::Stepper::stepToRight()
 {
-  if (isReady() == false)
+  if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::toRight(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToRight(), isReady() == false");
   }
 
   previous_x = next_x;
@@ -66,11 +66,11 @@ void sa::Stepper::toRight()
   progress = 0.f;
 }
 
-void sa::Stepper::toUp()
+void sa::Stepper::stepToUp()
 {
-  if (isReady() == false)
+  if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::toUp(), isReady() == false");
+    throw std::logic_error("sa::Stepper::stepToUp(), isReady() == false");
   }
 
   previous_x = next_x;
@@ -84,11 +84,11 @@ void sa::Stepper::toUp()
   progress = 0.f;
 }
 
-void sa::Stepper::toDown()
+void sa::Stepper::stepToDown()
 {
-  if (isReady() == false)
+  if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::toLeft(), isDown() == false");
+    throw std::logic_error("sa::Stepper::stepToDown(), isDown() == false");
   }
 
   previous_x = next_x;
@@ -96,7 +96,7 @@ void sa::Stepper::toDown()
 
   if (next_y < SIZE_MAX)
   {
-    ++next_x;
+    ++next_y;
   }
 
   progress = 0.f;
@@ -127,9 +127,12 @@ float sa::Stepper::getX() const
   if (previous_x < next_x)
   {
     return previous_x + progress;
-  } else {
+  }
+  if (previous_x > next_x)
+  {
     return previous_x - progress;
   }
+  return static_cast<float>(next_x);
 }
 
 float sa::Stepper::getY() const
@@ -137,7 +140,10 @@ float sa::Stepper::getY() const
   if (previous_y < next_y)
   {
     return previous_y + progress;
-  } else {
+  }
+  if (previous_y > next_y)
+  {
     return previous_y - progress;
   }
+  return static_cast<float>(next_y);
 }

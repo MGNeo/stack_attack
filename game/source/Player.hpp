@@ -5,19 +5,15 @@
 
 namespace sa
 {
-  class Player
+  class Player : public Stepper
   {
   public:
 
     Player(const size_t _x, const size_t _y);
 
-    Stepper& getStepper();
+    void progress(const float _dt);
 
     void draw(const Drawer& _drawer) const;
-
-  private:
-
-    Stepper stepper;
 
   };
 }

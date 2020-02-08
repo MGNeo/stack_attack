@@ -8,14 +8,12 @@ namespace sa
 
     Stepper(const size_t _x, const size_t _y);
 
-    void addProgress(const float _dt);
+    bool isReadyToStep() const;
     
-    bool isReady() const;
-    
-    void toLeft();
-    void toRight();
-    void toUp();
-    void toDown();
+    void stepToLeft();
+    void stepToRight();
+    void stepToUp();
+    void stepToDown();
 
     size_t getPreviousX() const;
     size_t getPreviousY() const;
@@ -25,6 +23,10 @@ namespace sa
 
     float getX() const;
     float getY() const;
+
+  protected:
+
+    void addProgress(const float _dt);
 
   private:
 

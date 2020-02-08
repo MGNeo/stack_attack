@@ -13,28 +13,28 @@ void sa::LevelScene::control(const sf::Event& _event)
 {
   if (_event.type == sf::Event::EventType::KeyPressed)
   {
-    if (player.getStepper().isReady())
+    if (player.isReadyToStep())
     {
       switch (_event.key.code)
       {
         case (sf::Keyboard::Left):
         {
-          player.getStepper().toLeft();
+          player.stepToLeft();
           break;
         }
         case (sf::Keyboard::Right):
         {
-          player.getStepper().toRight();
+          player.stepToRight();
           break;
         }
         case (sf::Keyboard::Up):
         {
-          player.getStepper().toUp();
+          player.stepToUp();
           break;
         }
         case (sf::Keyboard::Down):
         {
-          player.getStepper().toDown();
+          player.stepToDown();
           break;
         }
       }
@@ -44,7 +44,7 @@ void sa::LevelScene::control(const sf::Event& _event)
 
 void sa::LevelScene::process(const float _dt)
 {
-  player.getStepper().addProgress(_dt);
+  player.progress(_dt*9);
 }
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const

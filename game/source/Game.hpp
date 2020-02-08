@@ -13,7 +13,7 @@ namespace sa
 
   private:
 
-    static constexpr float MAX_FPS = 60.f;
+    static constexpr float MAX_FPS = 200.f;
     static constexpr float MIN_FPS = 30.f;
 
     static constexpr float MAX_DT = 1.f / MIN_FPS;

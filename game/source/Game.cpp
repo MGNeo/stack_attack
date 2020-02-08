@@ -32,6 +32,7 @@ void sa::Game::play()
     }
 
     const auto time = clock.getElapsedTime();
+    clock.restart();
     accumulated_dt += time.asSeconds();
 
     if (accumulated_dt > MIN_DT)
@@ -47,10 +48,10 @@ void sa::Game::play()
       current_scene->process(normalized_dt);
 
       render_window.clear();
-
       current_scene->draw(drawer);
-
       render_window.display();
+
+      accumulated_dt = 0.f;
     }
 
     sa::Scene::Uptr next_scene = current_scene->getNextScene();
