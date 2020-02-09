@@ -49,20 +49,22 @@ void sa::LevelScene::controlBoxes()
     {
       const size_t new_y = box.getNextY() + 1u;
 
+      auto& previous_cell = field.getCell(box.getPreviousX(), box.getPreviousY());
+
       // TODO: Optimise the logic.
       if (new_y >= field.getHeight())
       {
-        field.getCell(box.getPreviousX(), box.getPreviousY()).setBusy(false);
+        previous_cell.setBusy(false);
         box.fix();
         field.getCell(box.getNextX(), box.getNextY()).setBusy(true);
       } else {
         if (field.getCell(box.getNextX(), new_y).getBusy() == true)
         {
-          field.getCell(box.getPreviousX(), box.getPreviousY()).setBusy(false);
+          previous_cell.setBusy(false);
           box.fix();
           field.getCell(box.getNextX(), box.getNextY()).setBusy(true);
         } else {
-          field.getCell(box.getPreviousX(), box.getPreviousY()).setBusy(false);
+          previous_cell.setBusy(false);
           box.stepToDown();
           field.getCell(box.getNextX(), box.getNextY()).setBusy(true);
         }
