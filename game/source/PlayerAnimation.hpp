@@ -8,7 +8,7 @@ namespace sa
   {
   public:
 
-    PlayerAnimation();
+    PlayerAnimation(const float _speed = 1.f);
 
     void stand();
     void runToLeft();
@@ -19,10 +19,11 @@ namespace sa
 
   private:
 
+    const float speed;
+
+    const size_t SEQUENCES_LENGTHS[(size_t)PlayerAnimationState::COUNT];
+
     PlayerAnimationState state;
-    
-    // TODO: Context for the frame accounting.
-    const size_t MAX_FRAMES[(size_t)PlayerAnimationState::COUNT];
 
     float progress;
 

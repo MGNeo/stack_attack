@@ -8,25 +8,24 @@ namespace sa
 
     Stepper(const size_t _x, const size_t _y);
 
-    virtual bool isReadyToStep() const final;
+    bool isReadyToStep() const;
     
-    virtual void stepToLeft();
-    virtual void stepToRight();
-    virtual void stepToUp();
-    virtual void stepToDown();
+    void stepToLeft();
+    void stepToRight();
+    void stepToUp();
+    void stepToDown();
+    void fix();
 
-    virtual size_t getPreviousX() const final;
-    virtual size_t getPreviousY() const final;
+    size_t getPreviousX() const;
+    size_t getPreviousY() const;
 
-    virtual size_t getNextX() const final;
-    virtual size_t getNextY() const final;
+    size_t getNextX() const;
+    size_t getNextY() const;
 
-    virtual float getX() const final;
-    virtual float getY() const final;
+    float getX() const;
+    float getY() const;
 
-    virtual void addProgress(const float _dt);
-
-    virtual ~Stepper();
+    void addProgress(const float _dt);
 
   private:
 

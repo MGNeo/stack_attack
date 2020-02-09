@@ -38,3 +38,24 @@ sa::Cell& sa::Field::getCell(const size_t _x, const size_t _y)
 
   return cells[_x][_y];
 }
+
+void sa::Field::clear()
+{
+  for (size_t x = 0; x < width; ++x)
+  {
+    for (size_t y = 0; y < height; ++y)
+    {
+      cells[x][y].setBusy(false);
+    }
+  }
+}
+
+size_t sa::Field::getWidth() const
+{
+  return width;
+}
+
+size_t sa::Field::getHeight() const
+{
+  return height;
+}

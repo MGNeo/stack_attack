@@ -2,36 +2,82 @@
 
 sa::Player::Player(const size_t _x, const size_t _y)
   :
-  Stepper{ _x, _y }
+  stepper{ _x, _y }
 {
+}
+
+bool sa::Player::isReadyToStep() const
+{
+  return stepper.isReadyToStep();
 }
 
 void sa::Player::stepToLeft()
 {
-  Stepper::stepToLeft();
-  // ...
+  stepper.stepToLeft();
+  animation.runToLeft();
 }
 
 void sa::Player::stepToRight()
 {
-  Stepper::stepToRight();
-  // ...
+  stepper.stepToRight();
+  animation.runToRight();
 }
 
 void sa::Player::stepToUp()
 {
-  Stepper::stepToUp();
-  // ...
+  stepper.stepToUp();
+  animation.fall();
 }
 
 void sa::Player::stepToDown()
 {
-  Stepper::stepToDown();
-  // ...
+  stepper.stepToDown();
+  animation.fall();
+}
+
+void sa::Player::fix()
+{
+  stepper.fix();
+  animation.stand();
 }
 
 void sa::Player::addProgress(const float _dt)
 {
-  Stepper::addProgress(_dt);
-  // ...
+  stepper.addProgress(_dt);
+  animation.addProgress(_dt);
+
+  if (stepper.isReadyToStep() == true)
+  {
+    animation.stand();
+  }
+}
+
+size_t sa::Player::getPreviousX() const
+{
+  return stepper.getPreviousX();
+}
+
+size_t sa::Player::getPreviousY() const
+{
+  return stepper.getPreviousY();
+}
+
+size_t sa::Player::getNextX() const
+{
+  return stepper.getNextX();
+}
+
+size_t sa::Player::getNextY() const
+{
+  return stepper.getNextY();
+}
+
+float sa::Player::getX() const
+{
+  return stepper.getX();
+}
+
+float sa::Player::getY() const
+{
+  return stepper.getY();
 }

@@ -10,7 +10,11 @@ namespace sa
   public:
 
     Drawer(sf::RenderWindow& _render_window);
+
     void draw(const sf::Drawable& _drawable) const;
+
+    size_t getWindowWidth() const;
+    size_t getWindowHeight() const;
 
   private:
 

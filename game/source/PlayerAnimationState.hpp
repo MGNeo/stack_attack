@@ -2,7 +2,7 @@
 
 namespace sa
 {
-  enum class PlayerAnimationState
+  enum class PlayerAnimationState : size_t
   {
     STAND,
     RUN_TO_LEFT,

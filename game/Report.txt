@@ -12,3 +12,6 @@
 [2020y/1m/2d,1h:58m:37s] sa::ResourceLibrary::ResourceLibrary(), default texture can't be loaded.
 [2020y/1m/2d,2h:28m:10s] sa::ResourceLibrary::ResourceLibrary(), default texture can't be loaded.
 [2020y/1m/8d,22h:17m:16s] sa::Stepper::stepToRight(), isReady() == false
+[2020y/1m/9d,19h:57m:11s] sa::Field::getCell(), _y > height
+[2020y/1m/9d,20h:18m:39s] sa::Field::getCell(), _y > height
+[2020y/1m/9d,20h:19m:14s] sa::Field::getCell(), _y > height

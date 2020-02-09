@@ -102,6 +102,17 @@ void sa::Stepper::stepToDown()
   progress = 0.f;
 }
 
+void sa::Stepper::fix()
+{
+  if (isReadyToStep() == false)
+  {
+    throw std::logic_error("sa::Stepper::fix(), isReadyToStep() == false");
+  }
+
+  previous_x = next_x;
+  previous_y = next_y;
+}
+
 size_t sa::Stepper::getPreviousX() const
 {
   return previous_x;
@@ -146,7 +157,4 @@ float sa::Stepper::getY() const
     return previous_y - progress;
   }
   return static_cast<float>(next_y);
-}
-sa::Stepper::~Stepper()
-{
 }

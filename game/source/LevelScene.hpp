@@ -21,13 +21,18 @@ namespace sa
     Uptr getNextScene() override;
 
   private:
-    
-    // LevelMechanics level_mechanics;
-    // LevelRender level_render;
 
     Field field;
     std::list<Box> boxes;
     Player player;
+
+    void clearField();
+
+    void controlBoxes();
+
+    void processBoxes(const float _dt);
+
+    void drawBoxes(const Drawer& _drawer) const;
 
   };
 }

@@ -13,6 +13,11 @@ namespace sa
 
     Cell& getCell(const size_t _x, const size_t _y);
     
+    void clear();
+
+    size_t getWidth() const;
+    size_t getHeight() const;
+
   private:
 
     const size_t width;
