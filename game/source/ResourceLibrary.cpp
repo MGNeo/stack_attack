@@ -15,7 +15,7 @@ sa::ResourceLibrary::ResourceLibrary()
 }
 
 
-sf::Texture& sa::ResourceLibrary::getTexture(const std::string& _name)
+const sf::Texture& sa::ResourceLibrary::getTexture(const std::string& _name)
 {
   const auto iterator = textures.find(_name);
 

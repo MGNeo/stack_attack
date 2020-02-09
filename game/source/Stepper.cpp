@@ -147,3 +147,6 @@ float sa::Stepper::getY() const
   }
   return static_cast<float>(next_y);
 }
+sa::Stepper::~Stepper()
+{
+}

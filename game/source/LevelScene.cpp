@@ -3,7 +3,6 @@
 sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
-  level_resources{ resource_library },
   field{ 13u, 10u },
   player{ 5, 5 }
 {
@@ -44,12 +43,16 @@ void sa::LevelScene::control(const sf::Event& _event)
 
 void sa::LevelScene::process(const float _dt)
 {
-  player.progress(_dt*9);
+  player.addProgress(_dt * 9);
 }
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 {
-  player.draw(_drawer);
+  sf::Sprite sprite;
+  sprite.setTexture(resource_library.getTexture("Box.bmp"));
+  sprite.setPosition(200, 200);
+  sprite.setColor({ 255, 255, 0, 255 });
+  _drawer.draw(sprite);
 }
 
 sa::Scene::Uptr sa::LevelScene::getNextScene()

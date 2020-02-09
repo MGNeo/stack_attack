@@ -1,7 +1,7 @@
 #pragma once
 
 #include <Stepper.hpp>
-#include <Drawer.hpp>
+#include <PlayerAnimation.hpp>
 
 namespace sa
 {
@@ -11,9 +11,16 @@ namespace sa
 
     Player(const size_t _x, const size_t _y);
 
-    void progress(const float _dt);
+    void stepToLeft() override;
+    void stepToRight() override;
+    void stepToUp() override;
+    void stepToDown() override;
 
-    void draw(const Drawer& _drawer) const;
+    void addProgress(const float _dt) override;
+
+  public:
+
+    PlayerAnimation animation;
 
   };
 }

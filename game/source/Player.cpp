@@ -6,15 +6,32 @@ sa::Player::Player(const size_t _x, const size_t _y)
 {
 }
 
-void sa::Player::progress(const float _dt)
+void sa::Player::stepToLeft()
 {
-  addProgress(_dt);
+  Stepper::stepToLeft();
+  // ...
 }
 
-void sa::Player::draw(const Drawer& _drawer) const
+void sa::Player::stepToRight()
 {
-  sf::CircleShape circle;
-  circle.setRadius(16);
-  circle.setPosition(getX() * 32.f, getY() * 32.f);
-  _drawer.draw(circle);
+  Stepper::stepToRight();
+  // ...
+}
+
+void sa::Player::stepToUp()
+{
+  Stepper::stepToUp();
+  // ...
+}
+
+void sa::Player::stepToDown()
+{
+  Stepper::stepToDown();
+  // ...
+}
+
+void sa::Player::addProgress(const float _dt)
+{
+  Stepper::addProgress(_dt);
+  // ...
 }

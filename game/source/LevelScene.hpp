@@ -1,9 +1,10 @@
 #pragma once
 
 #include <Scene.hpp>
-#include <LevelResources.hpp>
 #include <Field.hpp>
+#include <Box.hpp>
 #include <Player.hpp>
+#include <list>
 
 namespace sa
 {
@@ -20,11 +21,12 @@ namespace sa
     Uptr getNextScene() override;
 
   private:
-
-    LevelResources level_resources;
+    
+    // LevelMechanics level_mechanics;
+    // LevelRender level_render;
 
     Field field;
-
+    std::list<Box> boxes;
     Player player;
 
   };

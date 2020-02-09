@@ -142,28 +142,31 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Player.cpp" />
+    <ClCompile Include="source\PlayerAnimation.cpp" />
     <ClCompile Include="source\Stepper.cpp" />
     <ClCompile Include="source\Cell.cpp" />
     <ClCompile Include="source\CrashReporter.cpp" />
     <ClCompile Include="source\Drawer.cpp" />
     <ClCompile Include="source\Field.cpp" />
     <ClCompile Include="source\Game.cpp" />
-    <ClCompile Include="source\LevelResources.cpp" />
     <ClCompile Include="source\LevelScene.cpp" />
     <ClCompile Include="source\main.cpp" />
     <ClCompile Include="source\ResourceLibrary.cpp" />
     <ClCompile Include="source\Scene.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="source\Box.hpp" />
     <ClInclude Include="source\Player.hpp" />
+    <ClInclude Include="source\PlayerAnimation.hpp" />
+    <ClInclude Include="source\PlayerAnimationState.hpp" />
     <ClInclude Include="source\Stepper.hpp" />
     <ClInclude Include="source\Cell.hpp" />
     <ClInclude Include="source\CrashReporter.hpp" />
     <ClInclude Include="source\Drawer.hpp" />
     <ClInclude Include="source\Field.hpp" />
     <ClInclude Include="source\Game.hpp" />
-    <ClInclude Include="source\LevelResources.hpp" />
     <ClInclude Include="source\LevelScene.hpp" />
     <ClInclude Include="source\ResourceLibrary.hpp" />
     <ClInclude Include="source\Scene.hpp" />
