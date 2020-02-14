@@ -4,7 +4,7 @@
 
 namespace sa
 {
-  // The limiting proxy for drawing.
+  // The limiting proxy for displaying.
   class Drawer
   {
   public:

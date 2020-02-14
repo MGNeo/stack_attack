@@ -28,7 +28,7 @@ namespace sa
     float getX() const;
     float getY() const;
 
-    void addProgress(const float _dt);
+    void process(const float _dt);
 
   public:
 

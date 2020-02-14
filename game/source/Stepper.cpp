@@ -11,7 +11,7 @@ sa::Stepper::Stepper(const size_t _x, const size_t _y)
 {
 }
 
-void sa::Stepper::addProgress(const float _progress)
+void sa::Stepper::process(const float _progress)
 {
   progress += _progress;
   if (progress > MAX_PROGRESS)
@@ -34,7 +34,7 @@ void sa::Stepper::stepToLeft()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToLeft(), isReadyToStep() == false");
+    throw std::logic_error("sa::Stepper::stepToLeft(), isReadyToStep() == false.");
   }
 
   previous_x = next_x;
@@ -52,7 +52,7 @@ void sa::Stepper::stepToRight()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToRight(), isReadyToStep() == false");
+    throw std::logic_error("sa::Stepper::stepToRight(), isReadyToStep() == false.");
   }
 
   previous_x = next_x;
@@ -70,7 +70,7 @@ void sa::Stepper::stepToUp()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToUp(), isReadyToStep() == false");
+    throw std::logic_error("sa::Stepper::stepToUp(), isReadyToStep() == false.");
   }
 
   previous_x = next_x;
@@ -88,7 +88,7 @@ void sa::Stepper::stepToDown()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::stepToDown(), isReadyToStep() == false");
+    throw std::logic_error("sa::Stepper::stepToDown(), isReadyToStep() == false.");
   }
 
   previous_x = next_x;
@@ -106,7 +106,7 @@ void sa::Stepper::fix()
 {
   if (isReadyToStep() == false)
   {
-    throw std::logic_error("sa::Stepper::fix(), isReadyToStep() == false");
+    throw std::logic_error("sa::Stepper::fix(), isReadyToStep() == false.");
   }
 
   previous_x = next_x;

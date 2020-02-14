@@ -14,7 +14,7 @@ namespace sa
 
     LevelScene(ResourceLibrary& _resource_library);
 
-    void control(const sf::Event& _event) override;
+    void react(const sf::Event& _event) override;
     void process(const float _dt) override;
     void draw(const Drawer& _drawer) const override;
 
@@ -26,13 +26,14 @@ namespace sa
     std::list<Box> boxes;
     Player player;
 
-    void clearField();
-
     void controlBoxes();
+    void controlPlayer();
 
     void processBoxes(const float _dt);
+    void processPlayer(const float _dt);
 
     void drawBoxes(const Drawer& _drawer) const;
+    void drawPlayer(const Drawer& _drawer) const;
 
   };
 }

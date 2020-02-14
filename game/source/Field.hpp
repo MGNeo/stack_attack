@@ -11,6 +11,8 @@ namespace sa
 
     Field(const size_t _width, const size_t _height);
 
+    bool isCellValid(const size_t _x, const size_t _y) const;
+
     Cell& getCell(const size_t _x, const size_t _y);
     
     void clear();

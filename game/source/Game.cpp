@@ -13,7 +13,7 @@ void sa::Game::play()
 {
   Scene::Uptr current_scene = std::make_unique<LevelScene>(resource_library);
 
-  const Drawer drawer{ render_window };
+  const Drawer displayer{ render_window };
 
   sf::Clock clock;
   float accumulated_dt = 0.f;
@@ -28,7 +28,7 @@ void sa::Game::play()
         render_window.close();
         goto LOOP_END;
       }
-      current_scene->control(event);
+      current_scene->react(event);
     }
 
     const auto time = clock.getElapsedTime();
@@ -48,7 +48,7 @@ void sa::Game::play()
       current_scene->process(normalized_dt);
 
       render_window.clear();
-      current_scene->draw(drawer);
+      current_scene->draw(displayer);
       render_window.display();
 
       accumulated_dt = 0.f;

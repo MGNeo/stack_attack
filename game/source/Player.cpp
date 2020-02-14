@@ -41,10 +41,10 @@ void sa::Player::fix()
   animation.stand();
 }
 
-void sa::Player::addProgress(const float _dt)
+void sa::Player::process(const float _dt)
 {
-  stepper.addProgress(_dt);
-  animation.addProgress(_dt);
+  stepper.process(_dt);
+  animation.process(_dt);
 
   if (stepper.isReadyToStep() == true)
   {

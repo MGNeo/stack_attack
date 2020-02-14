@@ -17,7 +17,7 @@ namespace sa
 
     virtual bool isActive() const;
     
-    virtual void control(const sf::Event& _event) = 0;
+    virtual void react(const sf::Event& _event) = 0;
     virtual void process(const float _dt) = 0;
     virtual void draw(const Drawer& _drawer) const = 0;
     
