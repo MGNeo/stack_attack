@@ -13,9 +13,14 @@ namespace sa
 
     const sf::Color& getColor() const;
 
+    bool isMarked() const;
+    void toMark();
+
   private:
 
     const sf::Color color;
+
+    bool mark;
 
   };
 }

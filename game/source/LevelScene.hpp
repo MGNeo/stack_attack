@@ -26,6 +26,11 @@ namespace sa
     std::list<Box> boxes;
     Player player;
 
+    void analyseLines();
+    void analyseSectors();
+
+    void deleteMarkedBoxes();
+
     void controlBoxes();
     void controlPlayer();
 

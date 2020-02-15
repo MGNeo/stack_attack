@@ -3,7 +3,7 @@
 sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
-  field{ 13u, 9u },
+  field{ 12u, 9u },
   player{ 5u, 5u }
 {
 }
@@ -15,6 +15,7 @@ void sa::LevelScene::react(const sf::Event& _event)
   {
     if (_event.key.code == sf::Keyboard::Space)
     {
+      srand(clock());
       sf::Color color;
       switch (rand() % 4)
       {
@@ -39,7 +40,7 @@ void sa::LevelScene::react(const sf::Event& _event)
           break;
         }
       }
-      Box box(rand() % 13, 0, color);
+      Box box(rand() % field.getWidth(), 0, color);
       boxes.push_front(box);
     }
   }
@@ -47,8 +48,12 @@ void sa::LevelScene::react(const sf::Event& _event)
 
 void sa::LevelScene::process(const float _dt)
 {
+  analyseLines();
+  deleteMarkedBoxes();
+
   controlBoxes();
   controlPlayer();
+
   processBoxes(_dt);
   processPlayer(_dt);
 }
@@ -62,6 +67,52 @@ void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 sa::Scene::Uptr sa::LevelScene::getNextScene()
 {
   return nullptr;
+}
+
+void sa::LevelScene::analyseLines()
+{
+  bool bottom_line_is_filled = true;
+
+  const size_t y = field.getHeight() - 1u;
+
+  for (size_t x = 0u; x < field.getWidth(); ++x)
+  {
+    const auto& cell = field.getCell(x, y);
+    if ((cell.getOccupyingBox() == nullptr) || (cell.getOccupyingBox()->isReadyToStep() == false))
+    {
+      bottom_line_is_filled = false;
+      break;
+    }
+  }
+
+  if (bottom_line_is_filled == true)
+  {
+    std::list<Box*> marked_boxes;
+    for (size_t x = 0u; x < field.getWidth(); ++x)
+    {
+      field.getCell(x, y).getOccupyingBox()->toMark();
+    }
+  }
+}
+
+void sa::LevelScene::analyseSectors()
+{
+  // ...
+}
+
+void sa::LevelScene::deleteMarkedBoxes()
+{
+  for (auto iterator = boxes.begin(); iterator != boxes.end();)
+  {
+    if (iterator->isMarked() == true)
+    {
+      field.getCell(iterator->getSourceX(), iterator->getSourceY()).setOccupingBox(nullptr);
+      field.getCell(iterator->getDestinationX(), iterator->getDestinationY()).setOccupingBox(nullptr);
+      iterator = boxes.erase(iterator);
+    } else {
+      ++iterator;
+    }
+  }
 }
 
 void sa::LevelScene::controlBoxes()
@@ -126,130 +177,6 @@ void sa::LevelScene::controlPlayer()
     }
 
   }
-  /*
-  if (player.isReadyToStep() == true)
-  {
-    player.fix();
-    
-    const size_t x = player.getDestinationX();
-    const size_t y = player.getDestinationY();
-
-    // The processing step to left.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-    {
-      bool playerStandsOntoSomething = false;
-      if (field.isCellValid(x, y + 1u) == true)
-      {
-        if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
-        {
-          playerStandsOntoSomething = true;
-        }
-      } else {
-        playerStandsOntoSomething = true;
-      }
-
-      if ((field.isCellValid(x - 1u, y) == true) &&
-          (field.isCellValid(x - 1u, y - 1u) == true) &&
-
-          (field.getCell(x - 1u, y).getOccupyingBox() == nullptr) &&
-          (field.getCell(x - 1u, y - 1u).getOccupyingBox() == nullptr))
-      {
-        if (playerStandsOntoSomething == true)
-        {
-          player.stepToLeft();
-          return;
-        } else {
-          if (field.isCellValid(x - 1u, y + 1u) == true)
-          {
-            if (field.getCell(x - 1u, y + 1u).getOccupyingBox() != nullptr)
-            {
-              player.stepToLeft();
-              return;
-            }
-          } else {
-            player.stepToLeft();
-            return;
-          }
-        }
-      }
-    }
-
-    // The processing step to right.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-    {
-      bool playerStandsOntoSomething = false;
-      if (field.isCellValid(x, y + 1u) == true)
-      {
-        if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
-        {
-          playerStandsOntoSomething = true;
-        }
-      } else {
-        playerStandsOntoSomething = true;
-      }
-
-      if ((field.isCellValid(x + 1u, y) == true) &&
-          (field.isCellValid(x + 1u, y - 1u) == true) &&
-
-          (field.getCell(x + 1u, y).getOccupyingBox() == nullptr) &&
-          (field.getCell(x + 1u, y - 1u).getOccupyingBox() == nullptr))
-      {
-        if (playerStandsOntoSomething == true)
-        {
-          player.stepToRight();
-          return;
-        } else {
-          if (field.isCellValid(x + 1u, y + 1u) == true)
-          {
-            if (field.getCell(x + 1u, y + 1u).getOccupyingBox() != nullptr)
-            {
-              player.stepToRight();
-              return;
-            }
-          } else {
-            player.stepToRight();
-            return;
-          }
-        }
-      }
-    }
-
-    // The processing step to up.
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-    {
-      if ((field.isCellValid(x, y - 1u) == true) &&
-          (field.isCellValid(x, y - 2u) == true) &&
-
-          (field.getCell(x, y - 1u).getOccupyingBox() == nullptr) &&
-          (field.getCell(x, y - 2u).getOccupyingBox() == nullptr))
-      {
-        if (field.isCellValid(x, y + 1u) == true)
-        {
-          if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
-          {
-            player.stepToUp();
-            return;
-          }
-        } else {
-          player.stepToUp();
-          return;
-        }
-      }
-    }
-
-    // TODO: Process step from box to void.
-
-    // The processing gravity.
-    if ((field.isCellValid(x, y) == true) &&
-        (field.isCellValid(x, y + 1u) == true) &&
-
-        (field.getCell(x, y).getOccupyingBox() == nullptr) &&
-        (field.getCell(x, y + 1u).getOccupyingBox() == nullptr))
-    {
-      player.stepToDown();
-    }
-  }
-  */
 }
 
 bool sa::LevelScene::playerTriesToStepToLeft()
@@ -268,7 +195,6 @@ bool sa::LevelScene::playerTriesToStepToLeft()
   } else {
     player_stands_onto_something = true;
   }
-
 
   if ((field.isCellValid(x - 1u, y) == true) && (field.isCellValid(x - 1u, y - 1u) == true))
   {
@@ -298,7 +224,7 @@ bool sa::LevelScene::playerTriesToStepToLeft()
         }
       }
     } else {
-      if (field.isCellValid(x - 1u, y + 1u) == true)// TODO: create relevant else branch.
+      if (field.isCellValid(x - 1u, y + 1u) == true)
       {
         if (field.getCell(x - 1u, y + 1u).getOccupyingBox() != nullptr)
         {
@@ -334,7 +260,6 @@ bool sa::LevelScene::playerTriesToStepToLeft()
 
 bool sa::LevelScene::playerTriesToStepToRight()
 {
-
   const size_t x = player.getSourceX();
   const size_t y = player.getSourceY();
 
@@ -349,7 +274,6 @@ bool sa::LevelScene::playerTriesToStepToRight()
   } else {
     player_stands_onto_something = true;
   }
-
 
   if ((field.isCellValid(x + 1u, y) == true) && (field.isCellValid(x + 1u, y - 1u) == true))
   {
@@ -379,7 +303,7 @@ bool sa::LevelScene::playerTriesToStepToRight()
         }
       }
     } else {
-      if (field.isCellValid(x + 1u, y + 1u) == true)// TODO: Create relevant else branch.
+      if (field.isCellValid(x + 1u, y + 1u) == true)
       {
         if (field.getCell(x + 1u, y + 1u).getOccupyingBox() != nullptr)
         {
