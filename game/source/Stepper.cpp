@@ -3,10 +3,10 @@
 
 sa::Stepper::Stepper(const size_t _x, const size_t _y)
   :
-  previous_x{ _x },
-  previous_y{ _y },
-  next_x{ _x },
-  next_y{ _y },
+  source_x{ _x },
+  source_y{ _y },
+  destination_x{ _x },
+  destination_y{ _y },
   progress{ MAX_PROGRESS }
 {
 }
@@ -37,12 +37,12 @@ void sa::Stepper::stepToLeft()
     throw std::logic_error("sa::Stepper::stepToLeft(), isReadyToStep() == false.");
   }
 
-  previous_x = next_x;
-  previous_y = next_y;
+  source_x = destination_x;
+  source_y = destination_y;
 
-  if (next_x > 0)
+  if (destination_x > 0u)
   {
-    --next_x;
+    --destination_x;
   }
 
   progress = 0.f;
@@ -55,12 +55,12 @@ void sa::Stepper::stepToRight()
     throw std::logic_error("sa::Stepper::stepToRight(), isReadyToStep() == false.");
   }
 
-  previous_x = next_x;
-  previous_y = next_y;
+  source_x = destination_x;
+  source_y = destination_y;
 
-  if (next_x < SIZE_MAX)
+  if (destination_x < SIZE_MAX)
   {
-    ++next_x;
+    ++destination_x;
   }
 
   progress = 0.f;
@@ -73,12 +73,12 @@ void sa::Stepper::stepToUp()
     throw std::logic_error("sa::Stepper::stepToUp(), isReadyToStep() == false.");
   }
 
-  previous_x = next_x;
-  previous_y = next_y;
+  source_x = destination_x;
+  source_y = destination_y;
 
-  if (next_y > 0)
+  if (destination_y > 0)
   {
-    --next_y;
+    --destination_y;
   }
 
   progress = 0.f;
@@ -91,12 +91,12 @@ void sa::Stepper::stepToDown()
     throw std::logic_error("sa::Stepper::stepToDown(), isReadyToStep() == false.");
   }
 
-  previous_x = next_x;
-  previous_y = next_y;
+  source_x = destination_x;
+  source_y = destination_y;
 
-  if (next_y < SIZE_MAX)
+  if (destination_y < SIZE_MAX)
   {
-    ++next_y;
+    ++destination_y;
   }
 
   progress = 0.f;
@@ -109,52 +109,52 @@ void sa::Stepper::fix()
     throw std::logic_error("sa::Stepper::fix(), isReadyToStep() == false.");
   }
 
-  previous_x = next_x;
-  previous_y = next_y;
+  source_x = destination_x;
+  source_y = destination_y;
 }
 
-size_t sa::Stepper::getPreviousX() const
+size_t sa::Stepper::getSourceX() const
 {
-  return previous_x;
+  return source_x;
 }
 
-size_t sa::Stepper::getPreviousY() const
+size_t sa::Stepper::getSourceY() const
 {
-  return previous_y;
+  return source_y;
 }
 
-size_t sa::Stepper::getNextX() const
+size_t sa::Stepper::getDestinationX() const
 {
-  return next_x;
+  return destination_x;
 }
 
-size_t sa::Stepper::getNextY() const
+size_t sa::Stepper::getDestinationY() const
 {
-  return next_y;
+  return destination_y;
 }
 
-float sa::Stepper::getX() const
+float sa::Stepper::getRepresentedX() const
 {
-  if (previous_x < next_x)
+  if (source_x < destination_x)
   {
-    return previous_x + progress;
+    return source_x + progress;
   }
-  if (previous_x > next_x)
+  if (source_x > destination_x)
   {
-    return previous_x - progress;
+    return source_x - progress;
   }
-  return static_cast<float>(next_x);
+  return static_cast<float>(destination_x);
 }
 
-float sa::Stepper::getY() const
+float sa::Stepper::getRepresentedY() const
 {
-  if (previous_y < next_y)
+  if (source_y < destination_y)
   {
-    return previous_y + progress;
+    return source_y + progress;
   }
-  if (previous_y > next_y)
+  if (source_y > destination_y)
   {
-    return previous_y - progress;
+    return source_y - progress;
   }
-  return static_cast<float>(next_y);
+  return static_cast<float>(destination_y);
 }

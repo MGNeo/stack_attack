@@ -2,16 +2,16 @@
 
 sa::Cell::Cell()
   :
-  busy{ false }
+  occupyingBox{ nullptr }
 {
 }
 
-bool sa::Cell::getBusy() const
+sa::Box* sa::Cell::getOccupyingBox() const
 {
-  return busy;
+  return occupyingBox;
 }
 
-void sa::Cell::setBusy(const bool _busy)
+void sa::Cell::setOccupingBox(Box*const _occupyingBox)
 {
-  busy = _busy;
+  occupyingBox = _occupyingBox;
 }

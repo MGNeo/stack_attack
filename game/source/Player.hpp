@@ -19,14 +19,14 @@ namespace sa
     void stepToDown();
     void fix();
 
-    size_t getPreviousX() const;
-    size_t getPreviousY() const;
+    size_t getSourceX() const;
+    size_t getSourceY() const;
 
-    size_t getNextX() const;
-    size_t getNextY() const;
+    size_t getDestinationX() const;
+    size_t getDestinationY() const;
 
-    float getX() const;
-    float getY() const;
+    float getRepresentedX() const;
+    float getRepresentedY() const;
 
     void process(const float _dt);
 

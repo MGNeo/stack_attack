@@ -1,5 +1,7 @@
 #pragma once
 
+#include <Box.hpp>
+
 namespace sa
 {
   class Cell
@@ -8,12 +10,13 @@ namespace sa
 
     Cell();
 
-    bool getBusy() const;
-    void setBusy(const bool _busy);
+    Box* getOccupyingBox() const;
+    void setOccupingBox(Box* const _occupyingBox);
 
   private:
 
     bool busy;
+    Box* occupyingBox;
 
   };
 }

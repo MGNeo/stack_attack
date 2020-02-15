@@ -52,32 +52,32 @@ void sa::Player::process(const float _dt)
   }
 }
 
-size_t sa::Player::getPreviousX() const
+size_t sa::Player::getSourceX() const
 {
-  return stepper.getPreviousX();
+  return stepper.getSourceX();
 }
 
-size_t sa::Player::getPreviousY() const
+size_t sa::Player::getSourceY() const
 {
-  return stepper.getPreviousY();
+  return stepper.getSourceY();
 }
 
-size_t sa::Player::getNextX() const
+size_t sa::Player::getDestinationX() const
 {
-  return stepper.getNextX();
+  return stepper.getDestinationX();
 }
 
-size_t sa::Player::getNextY() const
+size_t sa::Player::getDestinationY() const
 {
-  return stepper.getNextY();
+  return stepper.getDestinationY();
 }
 
-float sa::Player::getX() const
+float sa::Player::getRepresentedX() const
 {
-  return stepper.getX();
+  return stepper.getRepresentedX();
 }
 
-float sa::Player::getY() const
+float sa::Player::getRepresentedY() const
 {
-  return stepper.getY();
+  return stepper.getRepresentedY();
 }

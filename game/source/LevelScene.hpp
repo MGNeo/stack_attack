@@ -29,6 +29,11 @@ namespace sa
     void controlBoxes();
     void controlPlayer();
 
+    bool playerTriesToStepToLeft();
+    bool playerTriesToStepToRight();
+    bool playerTriesToStepToUp();
+    bool playerTriesToStepToDown();
+
     void processBoxes(const float _dt);
     void processPlayer(const float _dt);
 

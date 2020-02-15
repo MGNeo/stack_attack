@@ -54,7 +54,7 @@ void sa::Field::clear()
   {
     for (size_t y = 0; y < height; ++y)
     {
-      cells[x][y].setBusy(false);
+      cells[x][y].setOccupingBox(nullptr);
     }
   }
 }
