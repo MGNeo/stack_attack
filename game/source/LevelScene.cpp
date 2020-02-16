@@ -168,6 +168,8 @@ void sa::LevelScene::controlBoxes()
 
       box.fix();
 
+      field.getCell(box.getSourceX(), box.getSourceY()).setOccupingBox(&box);
+
       const size_t new_x = box.getSourceX();
       const size_t new_y = box.getSourceY() + 1u;
 
