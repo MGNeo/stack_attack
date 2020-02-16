@@ -20,5 +20,5 @@ bool sa::Box::isMarked() const
 
 void sa::Box::toMark()
 {
-  mark = true;
+    mark = true;
 }

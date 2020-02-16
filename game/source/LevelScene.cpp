@@ -48,11 +48,12 @@ void sa::LevelScene::react(const sf::Event& _event)
 
 void sa::LevelScene::process(const float _dt)
 {
-  analyseLines();
-  deleteMarkedBoxes();
-
   controlBoxes();
   controlPlayer();
+  
+  analyseLines();
+  analyseSectors();
+  deleteMarkedBoxes();
 
   processBoxes(_dt);
   processPlayer(_dt);
@@ -97,7 +98,49 @@ void sa::LevelScene::analyseLines()
 
 void sa::LevelScene::analyseSectors()
 {
-  // ...
+  for (size_t x = 0u; x < field.getWidth(); ++x)
+  {
+    for (size_t y = 0u; y < field.getHeight(); ++y)
+    {
+      Box* const central_box = field.getCell(x, y).getOccupyingBox();
+      if ((central_box != nullptr) && (central_box->isReadyToStep() == true))
+      {
+        std::list<Box*> selected_boxes;
+        selected_boxes.push_front(central_box);
+
+        auto analyse_cell = [&](const size_t _x, const size_t _y)
+        {
+          if (field.isCellValid(_x, _y) == true)
+          {
+            Box* const box = field.getCell(_x, _y).getOccupyingBox();
+            if (box != nullptr)
+            {
+              if (box->isReadyToStep() == true)
+              {
+                if (box->getColor() == central_box->getColor())
+                {
+                  selected_boxes.push_back(box);
+                }
+              }
+            }
+          }
+        };
+
+        analyse_cell(x - 1u, y);
+        analyse_cell(x + 1u, y);
+        analyse_cell(x, y - 1u);
+        analyse_cell(x, y + 1u);
+
+        if (selected_boxes.size() >= 3u)
+        {
+          for (auto selected_box : selected_boxes)
+          {
+            selected_box->toMark();
+          }
+        }
+      }
+    }
+  }
 }
 
 void sa::LevelScene::deleteMarkedBoxes()
