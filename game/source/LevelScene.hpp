@@ -26,23 +26,18 @@ namespace sa
     std::list<Box> boxes;
     Player player;
 
-    void analyseLines();
+    void processBoxes(const float _dt);
+    void boxTriesToStepToDown(Box& _box);
+    void analyseBottomLine();
     void analyseSectors();
-
     void deleteMarkedBoxes();
+    void drawBoxes(const Drawer& _drawer) const;
 
-    void controlBoxes();
-    void controlPlayer();
-
+    void processPlayer(const float _dt);
     bool playerTriesToStepToLeft();
     bool playerTriesToStepToRight();
     bool playerTriesToStepToUp();
     bool playerTriesToStepToDown();
-
-    void processBoxes(const float _dt);
-    void processPlayer(const float _dt);
-
-    void drawBoxes(const Drawer& _drawer) const;
     void drawPlayer(const Drawer& _drawer) const;
 
   };

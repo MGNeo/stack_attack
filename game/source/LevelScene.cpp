@@ -47,14 +47,7 @@ void sa::LevelScene::react(const sf::Event& _event)
 }
 
 void sa::LevelScene::process(const float _dt)
-{
-  controlBoxes();
-  controlPlayer();
-  
-  analyseLines();
-  analyseSectors();
-  deleteMarkedBoxes();
-
+{ 
   processBoxes(_dt);
   processPlayer(_dt);
 }
@@ -70,7 +63,43 @@ sa::Scene::Uptr sa::LevelScene::getNextScene()
   return nullptr;
 }
 
-void sa::LevelScene::analyseLines()
+void sa::LevelScene::processBoxes(const float _dt)
+{
+  for (auto& box : boxes)
+  {
+    box.process(_dt*2);
+    boxTriesToStepToDown(box);
+  }
+  analyseBottomLine();
+  analyseSectors();
+  deleteMarkedBoxes();
+}
+
+void sa::LevelScene::boxTriesToStepToDown(Box& _box)
+{
+  if (_box.isReadyToStep() == true)
+  {
+    field.getCell(_box.getSourceX(), _box.getSourceY()).setOccupingBox(nullptr);
+
+    _box.fix();
+
+    field.getCell(_box.getSourceX(), _box.getSourceY()).setOccupingBox(&_box);
+
+    const size_t new_x = _box.getSourceX();
+    const size_t new_y = _box.getSourceY() + 1u;
+
+    if (field.isCellValid(new_x, new_y) == true)
+    {
+      if (field.getCell(new_x, new_y).getOccupyingBox() == nullptr)
+      {
+        _box.stepToDown();
+      }
+    }
+    field.getCell(_box.getDestinationX(), _box.getDestinationY()).setOccupingBox(&_box);
+  }
+}
+
+void sa::LevelScene::analyseBottomLine()
 {
   bool bottom_line_is_filled = true;
 
@@ -158,35 +187,28 @@ void sa::LevelScene::deleteMarkedBoxes()
   }
 }
 
-void sa::LevelScene::controlBoxes()
+void sa::LevelScene::drawBoxes(const Drawer& _drawer) const
 {
-  for (auto& box : boxes)
+  sf::Texture texture = resource_library.getTexture("Box.bmp");
+
+  sf::Sprite sprite;
+  sprite.setTexture(texture, true);
+
+  //const float x_scale = 64.f / static_cast<float>(texture.getSize().x);
+  //const float y_scale = 64.f / static_cast<float>(texture.getSize().y);
+
+  //sprite.setScale(x_scale, y_scale);
+
+  for (const auto& box : boxes)
   {
-    if (box.isReadyToStep() == true)
-    {
-      field.getCell(box.getSourceX(), box.getSourceY()).setOccupingBox(nullptr);
+    sprite.setColor(box.getColor());
+    sprite.setPosition(box.getRepresentedX() * 64.f, box.getRepresentedY() * 64.f);
 
-      box.fix();
-
-      field.getCell(box.getSourceX(), box.getSourceY()).setOccupingBox(&box);
-
-      const size_t new_x = box.getSourceX();
-      const size_t new_y = box.getSourceY() + 1u;
-
-      if (field.isCellValid(new_x, new_y) == true)
-      {
-        if (field.getCell(new_x, new_y).getOccupyingBox() == nullptr)
-        {
-          box.stepToDown();
-        }
-      }
-
-      field.getCell(box.getDestinationX(), box.getDestinationY()).setOccupingBox(&box);
-    }
+    _drawer.draw(sprite);
   }
 }
 
-void sa::LevelScene::controlPlayer()
+void sa::LevelScene::processPlayer(const float _dt)
 {
   if (player.isReadyToStep() == true)
   {
@@ -215,13 +237,13 @@ void sa::LevelScene::controlPlayer()
         return;
       }
     }
-    
+
     if (playerTriesToStepToDown() == true)
     {
       return;
     }
-
   }
+  player.process(_dt*2);
 }
 
 bool sa::LevelScene::playerTriesToStepToLeft()
@@ -428,41 +450,6 @@ bool sa::LevelScene::playerTriesToStepToDown()
     }
   }
   return false;
-}
-
-void sa::LevelScene::processBoxes(const float _dt)
-{
-  for (auto& box : boxes)
-  {
-    box.process(_dt*2);
-  }
-}
-
-void sa::LevelScene::processPlayer(const float _dt)
-{
-  player.process(_dt*2);
-}
-
-void sa::LevelScene::drawBoxes(const Drawer& _drawer) const
-{
-  sf::Texture texture = resource_library.getTexture("Box.bmp");
-
-  sf::Sprite sprite;
-  sprite.setTexture(texture, true);
-
-  //const float x_scale = 64.f / static_cast<float>(texture.getSize().x);
-  //const float y_scale = 64.f / static_cast<float>(texture.getSize().y);
-
-  //sprite.setScale(x_scale, y_scale);
-
-  for (const auto& box : boxes)
-  {
-    sprite.setColor(box.getColor());
-    sprite.setPosition(box.getRepresentedX() * 64.f, box.getRepresentedY() * 64.f);
-    
-    _drawer.draw(sprite);
-  }
-
 }
 
 void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
