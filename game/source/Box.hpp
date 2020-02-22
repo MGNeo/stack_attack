@@ -9,7 +9,7 @@ namespace sa
   {
   public:
 
-    Box(const size_t _x, const size_t _y, const sf::Color _color = sf::Color::White);
+    Box(const ptrdiff_t _x, const ptrdiff_t _y, const sf::Color _color = sf::Color::White);
 
     const sf::Color& getColor() const;
 

@@ -100,7 +100,7 @@ void sa::LevelScene::boxTriesToStepToDown(Box& _box)
     field.getCell(_box.getSourceX(), _box.getSourceY()).setOccupingBox(&_box);
 
     const size_t new_x = _box.getSourceX();
-    const size_t new_y = _box.getSourceY() + 1u;
+    const size_t new_y = static_cast<size_t>(_box.getSourceY()) + 1u;
 
     if (field.isCellValid(new_x, new_y) == true)
     {
@@ -483,7 +483,7 @@ bool sa::LevelScene::playerTriesToStepToDown()
 
 void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
 {
-  sf::Texture texture = resource_library.getTexture("Unknown.bmp");
+  sf::Texture texture = resource_library.getTexture("Player.bmp");
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);

@@ -9,7 +9,7 @@ namespace sa
   {
   public:
 
-    Player(const size_t _x, const size_t _y);
+    Player(const ptrdiff_t _x, const ptrdiff_t _y);
 
     bool isReadyToStep() const;
 
@@ -19,11 +19,11 @@ namespace sa
     void stepToDown();
     void fix();
 
-    size_t getSourceX() const;
-    size_t getSourceY() const;
+    ptrdiff_t getSourceX() const;
+    ptrdiff_t getSourceY() const;
 
-    size_t getDestinationX() const;
-    size_t getDestinationY() const;
+    ptrdiff_t getDestinationX() const;
+    ptrdiff_t getDestinationY() const;
 
     float getRepresentedX() const;
     float getRepresentedY() const;

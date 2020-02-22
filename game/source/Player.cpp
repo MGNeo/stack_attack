@@ -1,6 +1,6 @@
 #include <Player.hpp>
 
-sa::Player::Player(const size_t _x, const size_t _y)
+sa::Player::Player(const ptrdiff_t _x, const ptrdiff_t _y)
   :
   stepper{ _x, _y }
 {
@@ -52,22 +52,22 @@ void sa::Player::process(const float _dt)
   }
 }
 
-size_t sa::Player::getSourceX() const
+ptrdiff_t sa::Player::getSourceX() const
 {
   return stepper.getSourceX();
 }
 
-size_t sa::Player::getSourceY() const
+ptrdiff_t sa::Player::getSourceY() const
 {
   return stepper.getSourceY();
 }
 
-size_t sa::Player::getDestinationX() const
+ptrdiff_t sa::Player::getDestinationX() const
 {
   return stepper.getDestinationX();
 }
 
-size_t sa::Player::getDestinationY() const
+ptrdiff_t sa::Player::getDestinationY() const
 {
   return stepper.getDestinationY();
 }

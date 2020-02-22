@@ -1,7 +1,7 @@
 #include <Stepper.hpp>
 #include <stdexcept>
 
-sa::Stepper::Stepper(const size_t _x, const size_t _y)
+sa::Stepper::Stepper(const ptrdiff_t _x, const ptrdiff_t _y)
   :
   source_x{ _x },
   source_y{ _y },
@@ -40,7 +40,7 @@ void sa::Stepper::stepToLeft()
   source_x = destination_x;
   source_y = destination_y;
 
-  if (destination_x > 0u)
+  if (destination_x > PTRDIFF_MIN)
   {
     --destination_x;
   }
@@ -58,7 +58,7 @@ void sa::Stepper::stepToRight()
   source_x = destination_x;
   source_y = destination_y;
 
-  if (destination_x < SIZE_MAX)
+  if (destination_x < PTRDIFF_MAX)
   {
     ++destination_x;
   }
@@ -76,7 +76,7 @@ void sa::Stepper::stepToUp()
   source_x = destination_x;
   source_y = destination_y;
 
-  if (destination_y > 0)
+  if (destination_y > PTRDIFF_MIN)
   {
     --destination_y;
   }
@@ -94,7 +94,7 @@ void sa::Stepper::stepToDown()
   source_x = destination_x;
   source_y = destination_y;
 
-  if (destination_y < SIZE_MAX)
+  if (destination_y < PTRDIFF_MAX)
   {
     ++destination_y;
   }
@@ -113,22 +113,22 @@ void sa::Stepper::fix()
   source_y = destination_y;
 }
 
-size_t sa::Stepper::getSourceX() const
+ptrdiff_t sa::Stepper::getSourceX() const
 {
   return source_x;
 }
 
-size_t sa::Stepper::getSourceY() const
+ptrdiff_t sa::Stepper::getSourceY() const
 {
   return source_y;
 }
 
-size_t sa::Stepper::getDestinationX() const
+ptrdiff_t sa::Stepper::getDestinationX() const
 {
   return destination_x;
 }
 
-size_t sa::Stepper::getDestinationY() const
+ptrdiff_t sa::Stepper::getDestinationY() const
 {
   return destination_y;
 }

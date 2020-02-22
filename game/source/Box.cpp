@@ -1,6 +1,6 @@
 #include <Box.hpp>
 
-sa::Box::Box(const size_t _x, const size_t _y, const sf::Color _color)
+sa::Box::Box(const ptrdiff_t _x, const ptrdiff_t _y, const sf::Color _color)
   :
   Stepper{ _x, _y },
   color{ _color },
