@@ -7,7 +7,7 @@ sa::Delivery::Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, co
   destination{ _destination },
   target{ _target },
   current{ _source },
-  progress{ 0.f }
+  progress{ MAX_PROGRESS }
 {
   if (source == destination)
   {
@@ -55,16 +55,15 @@ void sa::Delivery::step()
       if (current < PTRDIFF_MAX)
       {
         ++current;
+        progress = MIN_PROGRESS;
         return;
       }
     } else {
-      if (target != destination)
+      if (current > PTRDIFF_MIN)
       {
-        if (current > PTRDIFF_MIN)
-        {
-          --current;
-          return;
-        }
+        --current;
+        progress = MIN_PROGRESS;
+        return;
       }
     }
   }
@@ -77,6 +76,11 @@ void sa::Delivery::process(const float _dt)
   {
     progress = MAX_PROGRESS;
   }
+}
+
+ptrdiff_t sa::Delivery::getCurrent() const
+{
+  return current;
 }
 
 float sa::Delivery::getRepresentedCurrent() const

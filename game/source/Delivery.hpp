@@ -16,6 +16,7 @@ namespace sa
 
     void process(const float _dt);
 
+    ptrdiff_t getCurrent() const;
     float getRepresentedCurrent() const;
 
     bool isReadyToThrow() const;
@@ -35,6 +36,6 @@ namespace sa
 
     // TODO: Add color.
     // TODO: Add speed
-    .
+    
   };
 }

@@ -40,7 +40,7 @@ void sa::Stepper::stepToLeft()
     --destination_x;
   }
 
-  progress = 0.f;
+  progress = MIN_PROGRESS;
 }
 
 void sa::Stepper::stepToRight()
@@ -58,7 +58,7 @@ void sa::Stepper::stepToRight()
     ++destination_x;
   }
 
-  progress = 0.f;
+  progress = MIN_PROGRESS;
 }
 
 void sa::Stepper::stepToUp()
@@ -76,7 +76,7 @@ void sa::Stepper::stepToUp()
     --destination_y;
   }
 
-  progress = 0.f;
+  progress = MIN_PROGRESS;
 }
 
 void sa::Stepper::stepToDown()
@@ -94,7 +94,7 @@ void sa::Stepper::stepToDown()
     ++destination_y;
   }
 
-  progress = 0.f;
+  progress = MIN_PROGRESS;
 }
 
 void sa::Stepper::fix()

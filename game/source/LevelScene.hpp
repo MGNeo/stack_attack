@@ -2,6 +2,7 @@
 
 #include <Scene.hpp>
 #include <Field.hpp>
+#include <Delivery.hpp>
 #include <Box.hpp>
 #include <Player.hpp>
 #include <list>
@@ -23,11 +24,21 @@ namespace sa
   private:
 
     Field field;
+    std::list<Delivery> deliveries;
     std::list<Box> boxes;
     Player player;
 
+    // TODO: Use some sensible names.
+
+    void processDeliveries(const float _dt);
+    void generateDelivery(const float _dt);
+    void deliveryTriesToStep(Delivery& _delivery);
+    void analyseTarget(const Delivery& _delivery);
+    void checkFinishedDeliveries();
+    void drawDeliveries(const Drawer& _drawer) const;
+
     void processBoxes(const float _dt);
-    void generate(const float _dt);
+    void generateBox(const float _dt);
     void boxTriesToStepToDown(Box& _box);
     void analyseBottomLine();
     void analyseSectors();
