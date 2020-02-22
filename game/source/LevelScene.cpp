@@ -15,33 +15,7 @@ void sa::LevelScene::react(const sf::Event& _event)
   {
     if (_event.key.code == sf::Keyboard::Space)
     {
-      srand(clock());
-      sf::Color color;
-      switch (rand() % 4)
-      {
-        case (0):
-        {
-          color = sf::Color::Red;
-          break;
-        }
-        case (1):
-        {
-          color = sf::Color::Blue;
-          break;
-        }
-        case (2):
-        {
-          color = sf::Color::Yellow;
-          break;
-        }
-        case (3):
-        {
-          color = sf::Color::Green;
-          break;
-        }
-      }
-      Box box(rand() % field.getWidth(), 0, color);
-      boxes.push_front(box);
+      // ...
     }
   }
 }
@@ -65,6 +39,7 @@ sa::Scene::Uptr sa::LevelScene::getNextScene()
 
 void sa::LevelScene::processBoxes(const float _dt)
 {
+  generate(_dt);
   for (auto& box : boxes)
   {
     box.process(_dt*2);
@@ -73,6 +48,45 @@ void sa::LevelScene::processBoxes(const float _dt)
   analyseBottomLine();
   analyseSectors();
   deleteMarkedBoxes();
+}
+
+void sa::LevelScene::generate(const float _dt)
+{
+  static float timer;
+
+  timer += _dt;
+
+  if (timer > 1.f)
+  {
+    timer = 0.f;
+    srand(clock());
+    sf::Color color;
+    switch (rand() % 4)
+    {
+      case (0):
+      {
+        color = sf::Color::Red;
+        break;
+      }
+      case (1):
+      {
+        color = sf::Color::Blue;
+        break;
+      }
+      case (2):
+      {
+        color = sf::Color::Yellow;
+        break;
+      }
+      case (3):
+      {
+        color = sf::Color::Green;
+        break;
+      }
+    }
+    Box box(rand() % field.getWidth(), 0, color);
+    boxes.push_front(box);
+  }
 }
 
 void sa::LevelScene::boxTriesToStepToDown(Box& _box)
@@ -251,21 +265,24 @@ bool sa::LevelScene::playerTriesToStepToLeft()
   const size_t x = player.getSourceX();
   const size_t y = player.getSourceY();
 
-  bool player_stands_onto_something = false;
+  bool player_stands_on_something_reliable = false;
 
   if (field.isCellValid(x, y + 1u) == true)
   {
     if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
     {
-      player_stands_onto_something = true;
+      if (field.getCell(x, y + 1u).getOccupyingBox()->isReadyToStep() == true)
+      {
+        player_stands_on_something_reliable = true;
+      }
     }
   } else {
-    player_stands_onto_something = true;
+    player_stands_on_something_reliable = true;
   }
 
   if ((field.isCellValid(x - 1u, y) == true) && (field.isCellValid(x - 1u, y - 1u) == true))
   {
-    if (player_stands_onto_something == true)
+    if (player_stands_on_something_reliable == true)
     {
       if (field.getCell(x - 1u, y - 1u).getOccupyingBox() == nullptr)
       {
@@ -295,24 +312,27 @@ bool sa::LevelScene::playerTriesToStepToLeft()
       {
         if (field.getCell(x - 1u, y + 1u).getOccupyingBox() != nullptr)
         {
-          if (field.getCell(x - 1u, y - 1u).getOccupyingBox() == nullptr)
+          if (field.getCell(x - 1u, y + 1u).getOccupyingBox()->isReadyToStep() == true)
           {
-            if (field.getCell(x - 1u, y).getOccupyingBox() == nullptr)
+            if (field.getCell(x - 1u, y - 1u).getOccupyingBox() == nullptr)
             {
-              player.stepToLeft();
-              return true;
-            } else {
-              if (field.isCellValid(x - 2u, y) == true)
+              if (field.getCell(x - 1u, y).getOccupyingBox() == nullptr)
               {
-                if (field.getCell(x - 2u, y).getOccupyingBox() == nullptr)
+                player.stepToLeft();
+                return true;
+              } else {
+                if (field.isCellValid(x - 2u, y) == true)
                 {
-                  Box* const box = field.getCell(x - 1u, y).getOccupyingBox();
-                  if (box->isReadyToStep() == true)
+                  if (field.getCell(x - 2u, y).getOccupyingBox() == nullptr)
                   {
-                    box->stepToLeft();
-                    field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                    player.stepToLeft();
-                    return true;
+                    Box* const box = field.getCell(x - 1u, y).getOccupyingBox();
+                    if (box->isReadyToStep() == true)
+                    {
+                      box->stepToLeft();
+                      field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                      player.stepToLeft();
+                      return true;
+                    }
                   }
                 }
               }
@@ -330,21 +350,24 @@ bool sa::LevelScene::playerTriesToStepToRight()
   const size_t x = player.getSourceX();
   const size_t y = player.getSourceY();
 
-  bool player_stands_onto_something = false;
+  bool player_stands_on_something_reliable = false;
 
   if (field.isCellValid(x, y + 1u) == true)
   {
     if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
     {
-      player_stands_onto_something = true;
+      if (field.getCell(x, y + 1u).getOccupyingBox()->isReadyToStep() == true)
+      {
+        player_stands_on_something_reliable = true;
+      }
     }
   } else {
-    player_stands_onto_something = true;
+    player_stands_on_something_reliable = true;
   }
 
   if ((field.isCellValid(x + 1u, y) == true) && (field.isCellValid(x + 1u, y - 1u) == true))
   {
-    if (player_stands_onto_something == true)
+    if (player_stands_on_something_reliable == true)
     {
       if (field.getCell(x + 1u, y - 1u).getOccupyingBox() == nullptr)
       {
@@ -374,24 +397,27 @@ bool sa::LevelScene::playerTriesToStepToRight()
       {
         if (field.getCell(x + 1u, y + 1u).getOccupyingBox() != nullptr)
         {
-          if (field.getCell(x + 1u, y - 1u).getOccupyingBox() == nullptr)
+          if (field.getCell(x + 1u, y + 1u).getOccupyingBox()->isReadyToStep() == true)
           {
-            if (field.getCell(x + 1u, y).getOccupyingBox() == nullptr)
+            if (field.getCell(x + 1u, y - 1u).getOccupyingBox() == nullptr)
             {
-              player.stepToRight();
-              return true;
-            } else {
-              if (field.isCellValid(x + 2u, y) == true)
+              if (field.getCell(x + 1u, y).getOccupyingBox() == nullptr)
               {
-                if (field.getCell(x + 2u, y).getOccupyingBox() == nullptr)
+                player.stepToRight();
+                return true;
+              } else {
+                if (field.isCellValid(x + 2u, y) == true)
                 {
-                  Box* const box = field.getCell(x + 1u, y).getOccupyingBox();
-                  if (box->isReadyToStep() == true)
+                  if (field.getCell(x + 2u, y).getOccupyingBox() == nullptr)
                   {
-                    box->stepToRight();
-                    field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                    player.stepToRight();
-                    return true;
+                    Box* const box = field.getCell(x + 1u, y).getOccupyingBox();
+                    if (box->isReadyToStep() == true)
+                    {
+                      box->stepToRight();
+                      field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                      player.stepToRight();
+                      return true;
+                    }
                   }
                 }
               }
@@ -409,19 +435,22 @@ bool sa::LevelScene::playerTriesToStepToUp()
   const size_t x = player.getSourceX();
   const size_t y = player.getSourceY();
 
-  bool player_stands_onto_something = false;
+  bool player_stands_on_something_reliable = false;
 
   if (field.isCellValid(x, y + 1u) == true)
   {
     if (field.getCell(x, y + 1u).getOccupyingBox() != nullptr)
     {
-      player_stands_onto_something = true;
+      if (field.getCell(x, y + 1u).getOccupyingBox()->isReadyToStep() == true)
+      {
+        player_stands_on_something_reliable = true;
+      }
     }
   } else {
-    player_stands_onto_something = true;
+    player_stands_on_something_reliable = true;
   }
 
-  if (player_stands_onto_something == true)
+  if (player_stands_on_something_reliable == true)
   {
     if ((field.isCellValid(x, y) == true) && (field.isCellValid(x, y - 1u) == true))
     {
@@ -458,10 +487,8 @@ void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
-  sprite.setScale(16, 16);
+  sprite.setScale(8, 8);
 
-  sprite.setPosition(player.getRepresentedX() * 64.f, player.getRepresentedY() * 64.f);
-  _drawer.draw(sprite);
   sprite.setPosition(player.getRepresentedX() * 64.f, (player.getRepresentedY() - 1) * 64.f);
   _drawer.draw(sprite);
 }

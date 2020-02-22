@@ -27,6 +27,7 @@ namespace sa
     Player player;
 
     void processBoxes(const float _dt);
+    void generate(const float _dt);
     void boxTriesToStepToDown(Box& _box);
     void analyseBottomLine();
     void analyseSectors();
