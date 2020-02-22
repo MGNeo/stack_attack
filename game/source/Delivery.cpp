@@ -1,13 +1,15 @@
 #include <Delivery.hpp>
 #include <stdexcept>
 
-sa::Delivery::Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, const ptrdiff_t _target)
+sa::Delivery::Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, const ptrdiff_t _target,
+                       const float _speed)
   :
   source{ _source },
   destination{ _destination },
   target{ _target },
   current{ _source },
-  progress{ MAX_PROGRESS }
+  progress{ MAX_PROGRESS },
+  speed{ _speed }
 {
   if (source == destination)
   {
@@ -71,7 +73,7 @@ void sa::Delivery::step()
 
 void sa::Delivery::process(const float _dt)
 {
-  progress += _dt;
+  progress += speed * _dt;
   if (progress > MAX_PROGRESS)
   {
     progress = MAX_PROGRESS;
@@ -93,9 +95,10 @@ float sa::Delivery::getRepresentedCurrent() const
   }
 }
 
+// TODO: Fix this crazy logic.
 bool sa::Delivery::isReadyToThrow() const
 {
-  if (isReadyToStep() == true)
+  if (progress == MIN_PROGRESS)
   {
     if (current == target)
     {
@@ -106,9 +109,10 @@ bool sa::Delivery::isReadyToThrow() const
   return false;
 }
 
+// TODO: Fix this crazy logic.
 bool sa::Delivery::isFinish() const
 {
-  if (isReadyToStep() == true)
+  if (progress == MIN_PROGRESS)
   {
     if (current == destination)
     {

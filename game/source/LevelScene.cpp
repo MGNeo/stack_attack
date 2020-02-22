@@ -39,16 +39,16 @@ sa::Scene::Uptr sa::LevelScene::getNextScene()
   return nullptr;
 }
 
+// TODO: Fix this crazy logic.
 void sa::LevelScene::processDeliveries(const float _dt)
 {
   generateDelivery(_dt);
   for (auto& delivery : deliveries)
   {
     delivery.process(_dt);
-    analyseTarget(delivery);
-    deliveryTriesToStep(delivery);
   }
-  // TODO: Use one cycle.
+  deliveryTriesToStep();
+  analyseTarget();
   checkFinishedDeliveries();
 }
 
@@ -57,7 +57,7 @@ void sa::LevelScene::generateDelivery(const float _dt)
   static float timer;
   timer += _dt;
 
-  if (timer >= 1.f)
+  if ((deliveries.size() < 3) && (timer >= 2.f))
   {
     timer = 0.f;
 
@@ -66,7 +66,8 @@ void sa::LevelScene::generateDelivery(const float _dt)
 
     ptrdiff_t source{};
     ptrdiff_t destination{};
-    ptrdiff_t target = rand() % field.getWidth();;
+    ptrdiff_t target = rand() % field.getWidth();
+    float speed = 0.5f + ((rand() % 100)/100.f);
 
     switch (rand() % 2u)
     {
@@ -83,23 +84,58 @@ void sa::LevelScene::generateDelivery(const float _dt)
         break;
       }
     }
-    deliveries.push_front(Delivery{ source, destination, target });
+
+    deliveries.push_front(Delivery{ source, destination, target, speed });
   }
 }
 
-void sa::LevelScene::deliveryTriesToStep(Delivery& _delivery)
+void sa::LevelScene::deliveryTriesToStep()
 {
-  if (_delivery.isReadyToStep() == true)
+  for (auto& delivery : deliveries)
   {
-    _delivery.step();
+    if (delivery.isReadyToStep() == true)
+    {
+      delivery.step();
+    }
   }
 }
 
-void sa::LevelScene::analyseTarget(const Delivery& _delivery)
+void sa::LevelScene::analyseTarget()
 {
-  if (_delivery.isReadyToThrow() == true)
+  for (auto& delivery : deliveries)
   {
-    boxes.push_front(Box(_delivery.getCurrent(), 0, sf::Color::White));
+    if (delivery.isReadyToThrow() == true)
+    {
+      sf::Color color;
+
+      // DEBUG.
+      srand(clock());
+      switch (rand() % 4)
+      {
+        case (0):
+        {
+          color = sf::Color::Red;
+          break;
+        }
+        case (1):
+        {
+          color = sf::Color::Blue;
+          break;
+        }
+        case (2):
+        {
+          color = sf::Color::Yellow;
+          break;
+        }
+        case (3):
+        {
+          color = sf::Color::Green;
+          break;
+        }
+      }
+      Box box(delivery.getCurrent(), 0, color);
+      boxes.push_front(box);
+    }
   }
 }
 
@@ -134,7 +170,6 @@ void sa::LevelScene::drawDeliveries(const Drawer& _drawer) const
 
 void sa::LevelScene::processBoxes(const float _dt)
 {
-  generateBox(_dt);
   for (auto& box : boxes)
   {
     box.process(_dt*2);
@@ -143,48 +178,6 @@ void sa::LevelScene::processBoxes(const float _dt)
   analyseBottomLine();
   analyseSectors();
   deleteMarkedBoxes();
-}
-
-void sa::LevelScene::generateBox(const float _dt)
-{
-  static float timer;
-
-  timer += _dt;
-
-  if (timer > 1.f)
-  {
-    timer = 0.f;
-
-    sf::Color color;
-
-    // DEBUG.
-    srand(clock());
-    switch (rand() % 4)
-    {
-      case (0):
-      {
-        color = sf::Color::Red;
-        break;
-      }
-      case (1):
-      {
-        color = sf::Color::Blue;
-        break;
-      }
-      case (2):
-      {
-        color = sf::Color::Yellow;
-        break;
-      }
-      case (3):
-      {
-        color = sf::Color::Green;
-        break;
-      }
-    }
-    Box box(rand() % field.getWidth(), 0, color);
-    boxes.push_front(box);
-  }
 }
 
 void sa::LevelScene::boxTriesToStepToDown(Box& _box)

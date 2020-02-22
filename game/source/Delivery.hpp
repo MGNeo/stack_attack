@@ -8,7 +8,8 @@ namespace sa
   {
   public:
 
-    Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, const ptrdiff_t _target);
+    Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, const ptrdiff_t _target,
+             const float _speed);
 
     bool isReadyToStep() const;
 
@@ -35,7 +36,8 @@ namespace sa
     float progress;
 
     // TODO: Add color.
-    // TODO: Add speed
+    
+    const float speed;
     
   };
 }

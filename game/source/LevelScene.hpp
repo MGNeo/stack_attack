@@ -32,13 +32,12 @@ namespace sa
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
-    void deliveryTriesToStep(Delivery& _delivery);
-    void analyseTarget(const Delivery& _delivery);
+    void deliveryTriesToStep();
+    void analyseTarget();
     void checkFinishedDeliveries();
     void drawDeliveries(const Drawer& _drawer) const;
 
     void processBoxes(const float _dt);
-    void generateBox(const float _dt);
     void boxTriesToStepToDown(Box& _box);
     void analyseBottomLine();
     void analyseSectors();
