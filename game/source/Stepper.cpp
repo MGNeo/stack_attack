@@ -22,12 +22,7 @@ void sa::Stepper::process(const float _progress)
 
 bool sa::Stepper::isReadyToStep() const
 {
-  if (progress == MAX_PROGRESS)
-  {
-    return true;
-  } else {
-    return false;
-  }
+  return (progress == MAX_PROGRESS);
 }
 
 void sa::Stepper::stepToLeft()

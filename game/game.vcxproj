@@ -143,6 +143,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="source\Box.cpp" />
+    <ClCompile Include="source\Delivery.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PlayerAnimation.cpp" />
     <ClCompile Include="source\Stepper.cpp" />
@@ -158,6 +159,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Box.hpp" />
+    <ClInclude Include="source\Delivery.hpp" />
     <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\PlayerAnimation.hpp" />
     <ClInclude Include="source\PlayerAnimationState.hpp" />
