@@ -50,25 +50,23 @@ void sa::Delivery::step()
     throw std::logic_error("sa::Delivery::step(), isReadyToStep() == false.");
   }
 
-  if (target != destination)
+  if (current != destination)
   {
     if (source < destination)
     {
       if (current < PTRDIFF_MAX)
       {
         ++current;
-        progress = MIN_PROGRESS;
-        return;
       }
     } else {
       if (current > PTRDIFF_MIN)
       {
         --current;
-        progress = MIN_PROGRESS;
-        return;
       }
     }
   }
+  
+  progress = MIN_PROGRESS;
 }
 
 void sa::Delivery::process(const float _dt)
@@ -95,7 +93,6 @@ float sa::Delivery::getRepresentedCurrent() const
   }
 }
 
-// TODO: Fix this crazy logic.
 bool sa::Delivery::isReadyToThrow() const
 {
   if (progress == MIN_PROGRESS)
@@ -109,7 +106,6 @@ bool sa::Delivery::isReadyToThrow() const
   return false;
 }
 
-// TODO: Fix this crazy logic.
 bool sa::Delivery::isFinish() const
 {
   if (progress == MIN_PROGRESS)

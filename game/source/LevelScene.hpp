@@ -28,13 +28,11 @@ namespace sa
     std::list<Box> boxes;
     Player player;
 
-    // TODO: Use some sensible names.
-
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
     void deliveryTriesToStep();
-    void analyseTarget();
-    void checkFinishedDeliveries();
+    void analyseTargetsOfDeliveries();
+    void checkFinishOfDeliveries();
     void drawDeliveries(const Drawer& _drawer) const;
 
     void processBoxes(const float _dt);

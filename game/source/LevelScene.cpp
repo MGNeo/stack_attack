@@ -48,8 +48,8 @@ void sa::LevelScene::processDeliveries(const float _dt)
     delivery.process(_dt);
   }
   deliveryTriesToStep();
-  analyseTarget();
-  checkFinishedDeliveries();
+  analyseTargetsOfDeliveries();
+  checkFinishOfDeliveries();
 }
 
 void sa::LevelScene::generateDelivery(const float _dt)
@@ -66,7 +66,7 @@ void sa::LevelScene::generateDelivery(const float _dt)
 
     ptrdiff_t source{};
     ptrdiff_t destination{};
-    ptrdiff_t target = rand() % field.getWidth();
+    ptrdiff_t target =  1 + rand() % (field.getWidth() - 1);
     float speed = 0.5f + ((rand() % 100)/100.f);
 
     switch (rand() % 2u)
@@ -74,12 +74,12 @@ void sa::LevelScene::generateDelivery(const float _dt)
       case (0u):
       {
         source = -1;
-        destination = field.getWidth();
+        destination = field.getWidth() + 1;
         break;
       }
       case (1u):
       {
-        source = field.getWidth();
+        source = field.getWidth() + 1;
         destination = -1;
         break;
       }
@@ -100,7 +100,7 @@ void sa::LevelScene::deliveryTriesToStep()
   }
 }
 
-void sa::LevelScene::analyseTarget()
+void sa::LevelScene::analyseTargetsOfDeliveries()
 {
   for (auto& delivery : deliveries)
   {
@@ -139,7 +139,7 @@ void sa::LevelScene::analyseTarget()
   }
 }
 
-void sa::LevelScene::checkFinishedDeliveries()
+void sa::LevelScene::checkFinishOfDeliveries()
 {
   for (auto iterator = deliveries.begin(); iterator != deliveries.end();)
   {
@@ -158,8 +158,6 @@ void sa::LevelScene::drawDeliveries(const Drawer& _drawer) const
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
-
-  sprite.setScale(16, 16);
 
   for (const auto& delivery : deliveries)
   {
