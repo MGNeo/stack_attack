@@ -6,6 +6,7 @@
 #include <Box.hpp>
 #include <Player.hpp>
 #include <list>
+#include <random>
 
 namespace sa
 {
@@ -23,6 +24,8 @@ namespace sa
 
   private:
 
+    // TODO: Make the processing for special boxes of gray color
+
     Field field;
     std::list<Delivery> deliveries;
     std::list<Box> boxes;
@@ -30,8 +33,7 @@ namespace sa
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
-    void deliveryTriesToStep();
-    void analyseTargetsOfDeliveries();
+    void analyseTargetOfDelivery(Delivery& _delivery);
     void checkFinishOfDeliveries();
     void drawDeliveries(const Drawer& _drawer) const;
 
@@ -48,6 +50,14 @@ namespace sa
     bool playerTriesToStepToUp();
     bool playerTriesToStepToDown();
     void drawPlayer(const Drawer& _drawer) const;
+
+    std::default_random_engine random_engine;
+
+    // Generators:
+    DeliveryDirection getRandomDeliveryDirection();
+    sf::Color getRandomDeliveryColor();
+    float getRandomDeliverySpeed();
+    ptrdiff_t getRandomDeliveryTarget();
 
   };
 }

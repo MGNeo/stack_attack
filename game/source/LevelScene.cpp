@@ -4,7 +4,8 @@ sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
   field{ 12u, 9u },
-  player{ 5u, 5u }
+  player{ 5u, 5u },
+  random_engine{ clock() }
 {
 }
 
@@ -29,9 +30,9 @@ void sa::LevelScene::process(const float _dt)
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 {
-  drawDeliveries(_drawer);
   drawBoxes(_drawer);
   drawPlayer(_drawer);
+  drawDeliveries(_drawer);
 }
 
 sa::Scene::Uptr sa::LevelScene::getNextScene()
@@ -39,16 +40,14 @@ sa::Scene::Uptr sa::LevelScene::getNextScene()
   return nullptr;
 }
 
-// TODO: Fix this crazy logic.
 void sa::LevelScene::processDeliveries(const float _dt)
 {
   generateDelivery(_dt);
   for (auto& delivery : deliveries)
   {
     delivery.process(_dt);
+    analyseTargetOfDelivery(delivery);
   }
-  deliveryTriesToStep();
-  analyseTargetsOfDeliveries();
   checkFinishOfDeliveries();
 }
 
@@ -61,80 +60,53 @@ void sa::LevelScene::generateDelivery(const float _dt)
   {
     timer = 0.f;
 
-    // DEBUG.
-    srand(clock());
+    const auto direction = getRandomDeliveryDirection();
+    const auto speed = getRandomDeliverySpeed();
+    const auto color = getRandomDeliveryColor();
+    const auto target = getRandomDeliveryTarget();
 
-    ptrdiff_t source{};
-    ptrdiff_t destination{};
-    ptrdiff_t target =  1 + rand() % (field.getWidth() - 1);
-    float speed = 0.5f + ((rand() % 100)/100.f);
+    deliveries.emplace_front(direction, speed, color, target );
+  }
+}
 
-    switch (rand() % 2u)
+void sa::LevelScene::analyseTargetOfDelivery(Delivery& _delivery)
+{
+  const float represented_progress = _delivery.getProgress() / (Delivery::MAX_PROGRESS - Delivery::MIN_PROGRESS);
+  if (_delivery.hasBox() == true)
+  {
+    const ptrdiff_t begin_cell = -1;
+    const ptrdiff_t end_cell = field.getWidth() + 1u;
+    // Signed overflow is possible but it is impossible.
+    const ptrdiff_t cell_difference = end_cell - begin_cell;
+
+    bool need_to_throw = false;
+
+    switch (_delivery.getDirection())
     {
-      case (0u):
+      case (DeliveryDirection::FROM_LEFT_TO_RIGHT):
       {
-        source = -1;
-        destination = field.getWidth() + 1;
+        const ptrdiff_t represented_target = static_cast<ptrdiff_t>(begin_cell + represented_progress * cell_difference);
+        if (represented_target >= _delivery.getTarget())
+        {
+          need_to_throw = true;
+        }
         break;
       }
-      case (1u):
+      case (DeliveryDirection::FROM_RIGHT_TO_LEFT):
       {
-        source = field.getWidth() + 1;
-        destination = -1;
+        const ptrdiff_t represented_target = static_cast<ptrdiff_t>(end_cell - represented_progress * cell_difference);
+        if (represented_target < _delivery.getTarget())
+        {
+          need_to_throw = true;
+        }
         break;
       }
     }
 
-    deliveries.push_front(Delivery{ source, destination, target, speed });
-  }
-}
-
-void sa::LevelScene::deliveryTriesToStep()
-{
-  for (auto& delivery : deliveries)
-  {
-    if (delivery.isReadyToStep() == true)
+    if (need_to_throw == true)
     {
-      delivery.step();
-    }
-  }
-}
-
-void sa::LevelScene::analyseTargetsOfDeliveries()
-{
-  for (auto& delivery : deliveries)
-  {
-    if (delivery.isReadyToThrow() == true)
-    {
-      sf::Color color;
-
-      // DEBUG.
-      srand(clock());
-      switch (rand() % 4)
-      {
-        case (0):
-        {
-          color = sf::Color::Red;
-          break;
-        }
-        case (1):
-        {
-          color = sf::Color::Blue;
-          break;
-        }
-        case (2):
-        {
-          color = sf::Color::Yellow;
-          break;
-        }
-        case (3):
-        {
-          color = sf::Color::Green;
-          break;
-        }
-      }
-      Box box(delivery.getCurrent(), 0, color);
-      boxes.push_front(box);
+      _delivery.throwBox();
+      boxes.push_front({ _delivery.getTarget(), 0u, _delivery.getColor() });
     }
   }
 }
@@ -143,7 +115,7 @@ void sa::LevelScene::checkFinishOfDeliveries()
 {
   for (auto iterator = deliveries.begin(); iterator != deliveries.end();)
   {
-    if (iterator->isFinish() == true)
+    if (iterator->getProgress() == Delivery::MAX_PROGRESS)
     {
       iterator = deliveries.erase(iterator);
     } else {
@@ -153,16 +125,50 @@ void sa::LevelScene::checkFinishOfDeliveries()
 }
 
 void sa::LevelScene::drawDeliveries(const Drawer& _drawer) const
-{
-  sf::Texture texture = resource_library.getTexture("Delivery.bmp");
+{ 
+ 
+  sf::Texture boxTexture = resource_library.getTexture("Box.bmp");
+  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.bmp");
+  
+  sf::Sprite boxSprite;
+  boxSprite.setTexture(boxTexture, true);
 
-  sf::Sprite sprite;
-  sprite.setTexture(texture, true);
+  sf::Sprite deliverySprite;
+  deliverySprite.setTexture(deliveryTexture, true);
+
+  const ptrdiff_t begin_cell = -1;
+  const ptrdiff_t end_cell = field.getWidth() + 1;
+  // Signed overflow is possible but it is impossible.
+  const ptrdiff_t cell_difference = end_cell - begin_cell;
 
   for (const auto& delivery : deliveries)
   {
-    sprite.setPosition(delivery.getRepresentedCurrent() * 64.f, 0u);
-    _drawer.draw(sprite);
+    const float represented_progress = delivery.getProgress() / (Delivery::MAX_PROGRESS - Delivery::MIN_PROGRESS);
+    float represented_x{};
+
+    switch (delivery.getDirection())
+    {
+      case (DeliveryDirection::FROM_LEFT_TO_RIGHT):
+      {
+        represented_x = begin_cell + represented_progress * cell_difference;
+        break;
+      }
+      case (DeliveryDirection::FROM_RIGHT_TO_LEFT):
+      {
+        represented_x = end_cell - represented_progress * cell_difference;
+        break;
+      }
+    }
+
+    if (delivery.hasBox() == true)
+    {
+      boxSprite.setColor(delivery.getColor());
+      boxSprite.setPosition(represented_x * 64.f, 0.f);
+      _drawer.draw(boxSprite);
+    }
+
+    deliverySprite.setPosition(represented_x * 64.f, 0.f);
+    _drawer.draw(deliverySprite);
   }
 }
 
@@ -580,4 +586,50 @@ void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
 
   sprite.setPosition(player.getRepresentedX() * 64.f, (player.getRepresentedY() - 1) * 64.f);
   _drawer.draw(sprite);
+}
+
+sa::DeliveryDirection sa::LevelScene::getRandomDeliveryDirection()
+{
+  std::uniform_int_distribution uid{ 0u, 1u };
+
+  switch (uid(random_engine))
+  {
+    case (0u):
+    {
+      return DeliveryDirection::FROM_LEFT_TO_RIGHT;
+      break;
+    }
+    case (1u):
+    {
+      return DeliveryDirection::FROM_RIGHT_TO_LEFT;
+      break;
+    }
+  }
+}
+
+sf::Color sa::LevelScene::getRandomDeliveryColor()
+{
+  const static sf::Color colors[] = { sf::Color::Red,
+                                      sf::Color::Blue,
+                                      sf::Color::Green,
+                                      sf::Color::Yellow,
+                                      sf::Color{155u, 155u, 155u, 255u} };
+
+  std::uniform_int_distribution uid{ 0u, std::size(colors) };
+
+  return colors[uid(random_engine)];
+}
+
+float sa::LevelScene::getRandomDeliverySpeed()
+{
+  std::uniform_real_distribution urd{ 0.05f, 0.3f };
+  
+  return urd(random_engine);
+}
+
+ptrdiff_t sa::LevelScene::getRandomDeliveryTarget()
+{
+  std::uniform_int_distribution uid{ 0u, field.getWidth() - 1u };
+
+  return uid(random_engine);
 }

@@ -27,3 +27,4 @@
 [2020y/1m/15d,0h:9m:0s] sa::Stepper::stepToUp(), isReadyToStep() == false.
 [2020y/1m/15d,0h:9m:48s] sa::Stepper::stepToUp(), isReadyToStep() == false.
 [2020y/1m/15d,21h:50m:43s] sa::Field::getCell(), _x > width.
+[2020y/1m/24d,0h:26m:39s] sa::Field::getCell(), _x > width.

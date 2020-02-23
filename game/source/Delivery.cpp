@@ -1,72 +1,18 @@
 #include <Delivery.hpp>
 #include <stdexcept>
 
-sa::Delivery::Delivery(const ptrdiff_t _source, const ptrdiff_t _destination, const ptrdiff_t _target,
-                       const float _speed)
+sa::Delivery::Delivery(const DeliveryDirection _direction,
+                       const float _speed,
+                       const sf::Color _color,
+                       const ptrdiff_t _target)
   :
-  source{ _source },
-  destination{ _destination },
+  direction{ _direction },
+  speed{ _speed },
+  color{ _color },
   target{ _target },
-  current{ _source },
-  progress{ MAX_PROGRESS },
-  speed{ _speed }
+  progress{ MIN_PROGRESS },
+  has{ true }
 {
-  if (source == destination)
-  {
-    throw std::invalid_argument("sa::Delivery::Delivery(), source == destination.");
-  }
-
-  if (source < destination)
-  {
-    if (target < source)
-    {
-      throw std::invalid_argument("sa::Delivery::Delivery(), target < source.");
-    }
-    if (target > destination)
-    {
-      throw std::invalid_argument("sa::Delivery::Delivery(), target > destination.");
-    }
-  } else {
-    if (target > source)
-    {
-      throw std::invalid_argument("sa::Delivery::Delivery(), target > source.");
-    }
-    if (target < destination)
-    {
-      throw std::invalid_argument("sa::Delivery::Delivery(), target < destination.");
-    }
-  }
-}
-
-bool sa::Delivery::isReadyToStep() const
-{
-  return (progress == MAX_PROGRESS);
-}
-
-void sa::Delivery::step()
-{
-  if (isReadyToStep() == false)
-  {
-    throw std::logic_error("sa::Delivery::step(), isReadyToStep() == false.");
-  }
-
-  if (current != destination)
-  {
-    if (source < destination)
-    {
-      if (current < PTRDIFF_MAX)
-      {
-        ++current;
-      }
-    } else {
-      if (current > PTRDIFF_MIN)
-      {
-        --current;
-      }
-    }
-  }
-  
-  progress = MIN_PROGRESS;
 }
 
 void sa::Delivery::process(const float _dt)
@@ -78,42 +24,37 @@ void sa::Delivery::process(const float _dt)
   }
 }
 
-ptrdiff_t sa::Delivery::getCurrent() const
+sa::DeliveryDirection sa::Delivery::getDirection() const
 {
-  return current;
+  return direction;
 }
 
-float sa::Delivery::getRepresentedCurrent() const
+sf::Color sa::Delivery::getColor() const
 {
-  if (source < destination)
+  return color;
+}
+
+ptrdiff_t sa::Delivery::getTarget() const
+{
+  return target;
+}
+
+float sa::Delivery::getProgress() const
+{
+  return progress;
+}
+
+bool sa::Delivery::hasBox() const
+{
+  return has;
+}
+
+void sa::Delivery::throwBox()
+{
+  if (has == true)
   {
-    return static_cast<float>(current) + progress;
+    has = false;
   } else {
-    return static_cast<float>(current) - progress;
+    throw std::invalid_argument("sa::Delivery::throwBox(), has == false.");
   }
-}
-
-bool sa::Delivery::isReadyToThrow() const
-{
-  if (progress == MIN_PROGRESS)
-  {
-    if (current == target)
-    {
-      return true;
-    }
-  }
-
-  return false;
-}
-
-bool sa::Delivery::isFinish() const
-{
-  if (progress == MIN_PROGRESS)
-  {
-    if (current == destination)
-    {
-      return true;
-    }
-  }
-  return false;
 }
