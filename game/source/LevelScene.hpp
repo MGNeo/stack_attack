@@ -33,6 +33,8 @@ namespace sa
     Box::List boxes;
     Player player;
 
+    // TODO: React subsystem.
+    // TODO: Process subsystem.
     LevelSceneDrawSubsystem draw_subsystem;
 
     void processDeliveries(const float _dt);
