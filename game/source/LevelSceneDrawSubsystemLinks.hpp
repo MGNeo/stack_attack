@@ -27,7 +27,7 @@ namespace sa
 
   private:
     
-    // Attention: Object of this class cannot be moved.
+    // Attention: Object of this class cannot be moved (it applies to the assignment operator).
     ResourceLibrary& resource_library;
     const Field& field;
     const Delivery::List& deliveries;
