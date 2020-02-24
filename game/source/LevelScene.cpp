@@ -537,6 +537,7 @@ sa::DeliveryDirection sa::LevelScene::getRandomDeliveryDirection()
       break;
     }
   }
+  throw std::runtime_error("sa::LevelScene::getRandomDeliveryDirection(), Unknown value of DeliveryDirection was find.");
 }
 
 sf::Color sa::LevelScene::getRandomDeliveryColor()
