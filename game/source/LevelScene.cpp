@@ -129,14 +129,16 @@ void sa::LevelScene::checkFinishOfDeliveries()
 void sa::LevelScene::drawDeliveries(const Drawer& _drawer) const
 { 
  
-  sf::Texture boxTexture = resource_library.getTexture("Box.bmp");
-  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.bmp");
+  sf::Texture boxTexture = resource_library.getTexture("Box.png");
+  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.png");
   
   sf::Sprite boxSprite;
   boxSprite.setTexture(boxTexture, true);
+  boxSprite.setScale(8.f, 8.f);
 
   sf::Sprite deliverySprite;
   deliverySprite.setTexture(deliveryTexture, true);
+  deliverySprite.setScale(8.f, 8.f);
 
   const ptrdiff_t begin_cell = -1;
   const ptrdiff_t end_cell = field.getWidth();
@@ -300,7 +302,7 @@ void sa::LevelScene::deleteMarkedBoxes()
 
 void sa::LevelScene::drawBoxes(const Drawer& _drawer) const
 {
-  sf::Texture texture = resource_library.getTexture("Box.bmp");
+  sf::Texture texture = resource_library.getTexture("Box.png");
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
@@ -308,7 +310,7 @@ void sa::LevelScene::drawBoxes(const Drawer& _drawer) const
   //const float x_scale = 64.f / static_cast<float>(texture.getSize().x);
   //const float y_scale = 64.f / static_cast<float>(texture.getSize().y);
 
-  //sprite.setScale(x_scale, y_scale);
+  sprite.setScale(8.f, 8.f);
 
   for (const auto& box : boxes)
   {
@@ -592,7 +594,7 @@ bool sa::LevelScene::playerTriesToStepToDown()
 
 void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
 {
-  sf::Texture texture = resource_library.getTexture("Player.bmp");
+  sf::Texture texture = resource_library.getTexture("Player.png");
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
