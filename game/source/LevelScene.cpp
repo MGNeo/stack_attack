@@ -4,7 +4,7 @@ sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
   field{ 12u, 9u },
-  player{ 5u, 5u },
+  player{ 6u, 8u },
   random_engine{ clock() }
 {
 }
@@ -30,8 +30,8 @@ void sa::LevelScene::process(const float _dt)
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 {
-  drawBoxes(_drawer);
   drawPlayer(_drawer);
+  drawBoxes(_drawer);
   drawDeliveries(_drawer);
 }
 
@@ -56,7 +56,7 @@ void sa::LevelScene::generateDelivery(const float _dt)
   static float timer;
   timer += _dt;
 
-  if ((deliveries.size() < 3) && (timer >= 2.f))
+  if ((deliveries.size() < 5) && (timer >= 1.f))
   {
     timer = 0.f;
 
@@ -71,11 +71,12 @@ void sa::LevelScene::generateDelivery(const float _dt)
 
 void sa::LevelScene::analyseTargetOfDelivery(Delivery& _delivery)
 {
-  const float represented_progress = _delivery.getProgress() / (Delivery::MAX_PROGRESS - Delivery::MIN_PROGRESS);
   if (_delivery.hasBox() == true)
-  {
+  { 
+    const float float_target = static_cast<float>(_delivery.getTarget());
+
     const ptrdiff_t begin_cell = -1;
-    const ptrdiff_t end_cell = field.getWidth() + 1u;
+    const ptrdiff_t end_cell = field.getWidth();
     // Signed overflow is possible but it is impossible.
     const ptrdiff_t cell_difference = end_cell - begin_cell;
 
@@ -85,8 +86,8 @@ void sa::LevelScene::analyseTargetOfDelivery(Delivery& _delivery)
     {
       case (DeliveryDirection::FROM_LEFT_TO_RIGHT):
       {
-        const ptrdiff_t represented_target = static_cast<ptrdiff_t>(begin_cell + represented_progress * cell_difference);
-        if (represented_target >= _delivery.getTarget())
+        const float float_position = static_cast<float>(begin_cell) + _delivery.getProgress() * cell_difference;
+        if (float_position >= float_target)
         {
           need_to_throw = true;
         }
@@ -94,8 +95,8 @@ void sa::LevelScene::analyseTargetOfDelivery(Delivery& _delivery)
       }
       case (DeliveryDirection::FROM_RIGHT_TO_LEFT):
       {
-        const ptrdiff_t represented_target = static_cast<ptrdiff_t>(end_cell - represented_progress * cell_difference);
-        if (represented_target < _delivery.getTarget())
+        const float float_position = static_cast<float>(end_cell - _delivery.getProgress() * cell_difference);
+        if (float_position <= float_target)
         {
           need_to_throw = true;
         }
@@ -115,7 +116,7 @@ void sa::LevelScene::checkFinishOfDeliveries()
 {
   for (auto iterator = deliveries.begin(); iterator != deliveries.end();)
   {
-    if (iterator->getProgress() == Delivery::MAX_PROGRESS)
+    if (iterator->getProgress() == 1.f)
     {
       iterator = deliveries.erase(iterator);
     } else {
@@ -137,13 +138,13 @@ void sa::LevelScene::drawDeliveries(const Drawer& _drawer) const
   deliverySprite.setTexture(deliveryTexture, true);
 
   const ptrdiff_t begin_cell = -1;
-  const ptrdiff_t end_cell = field.getWidth() + 1;
+  const ptrdiff_t end_cell = field.getWidth();
   // Signed overflow is possible but it is impossible.
   const ptrdiff_t cell_difference = end_cell - begin_cell;
 
   for (const auto& delivery : deliveries)
   {
-    const float represented_progress = delivery.getProgress() / (Delivery::MAX_PROGRESS - Delivery::MIN_PROGRESS);
+    const float represented_progress = delivery.getProgress();
     float represented_x{};
 
     switch (delivery.getDirection())
@@ -615,7 +616,7 @@ sf::Color sa::LevelScene::getRandomDeliveryColor()
                                       sf::Color::Yellow,
                                       sf::Color{155u, 155u, 155u, 255u} };
 
-  std::uniform_int_distribution uid{ 0u, std::size(colors) };
+  std::uniform_int_distribution uid{ 0u, std::size(colors) - 1u };
 
   return colors[uid(random_engine)];
 }

@@ -10,7 +10,7 @@ sa::Delivery::Delivery(const DeliveryDirection _direction,
   speed{ _speed },
   color{ _color },
   target{ _target },
-  progress{ MIN_PROGRESS },
+  progress{ 0.f },
   has{ true }
 {
 }
@@ -18,9 +18,9 @@ sa::Delivery::Delivery(const DeliveryDirection _direction,
 void sa::Delivery::process(const float _dt)
 {
   progress += speed * _dt;
-  if (progress > MAX_PROGRESS)
+  if (progress > 1.f)
   {
-    progress = MAX_PROGRESS;
+    progress = 1.f;
   }
 }
 

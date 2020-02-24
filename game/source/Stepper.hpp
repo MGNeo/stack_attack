@@ -32,9 +32,6 @@ namespace sa
 
   private:
 
-    static constexpr float MIN_PROGRESS = 0.f;
-    static constexpr float MAX_PROGRESS = 1.f;
-
     ptrdiff_t source_x;
     ptrdiff_t source_y;
 

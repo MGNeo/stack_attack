@@ -7,22 +7,22 @@ sa::Stepper::Stepper(const ptrdiff_t _x, const ptrdiff_t _y)
   source_y{ _y },
   destination_x{ _x },
   destination_y{ _y },
-  progress{ MAX_PROGRESS }
+  progress{ 1.f }
 {
 }
 
 void sa::Stepper::process(const float _progress)
 {
   progress += _progress;
-  if (progress > MAX_PROGRESS)
+  if (progress > 1.f)
   {
-    progress = MAX_PROGRESS;
+    progress = 1.f;
   }
 }
 
 bool sa::Stepper::isReadyToStep() const
 {
-  return (progress == MAX_PROGRESS);
+  return (progress == 1.f);
 }
 
 void sa::Stepper::stepToLeft()
@@ -40,7 +40,7 @@ void sa::Stepper::stepToLeft()
     --destination_x;
   }
 
-  progress = MIN_PROGRESS;
+  progress = 0.f;
 }
 
 void sa::Stepper::stepToRight()
@@ -58,7 +58,7 @@ void sa::Stepper::stepToRight()
     ++destination_x;
   }
 
-  progress = MIN_PROGRESS;
+  progress = 0.f;
 }
 
 void sa::Stepper::stepToUp()
@@ -76,7 +76,7 @@ void sa::Stepper::stepToUp()
     --destination_y;
   }
 
-  progress = MIN_PROGRESS;
+  progress = 0.f;
 }
 
 void sa::Stepper::stepToDown()
@@ -94,7 +94,7 @@ void sa::Stepper::stepToDown()
     ++destination_y;
   }
 
-  progress = MIN_PROGRESS;
+  progress = 0.f;
 }
 
 void sa::Stepper::fix()

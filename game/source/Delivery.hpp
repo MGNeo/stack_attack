@@ -10,9 +10,6 @@ namespace sa
   {
   public:
 
-    static constexpr float MIN_PROGRESS = 0.f;
-    static constexpr float MAX_PROGRESS = 1.f;
-
     Delivery(const DeliveryDirection _direction,
              const float _speed,
              const sf::Color _color,
