@@ -7,6 +7,8 @@
 #include <Player.hpp>
 #include <list>
 #include <random>
+#include <LevelSceneDrawSubsystem.hpp>
+#include <LevelSceneDrawSubsystemLinks.hpp>
 
 namespace sa
 {
@@ -27,29 +29,28 @@ namespace sa
     const sf::Color NON_MOVABLE_COLOR;
 
     Field field;
-    std::list<Delivery> deliveries;
-    std::list<Box> boxes;
+    Delivery::List deliveries;
+    Box::List boxes;
     Player player;
+
+    LevelSceneDrawSubsystem draw_subsystem;
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
     void analyseTargetOfDelivery(Delivery& _delivery);
     void checkFinishOfDeliveries();
-    void drawDeliveries(const Drawer& _drawer) const;
 
     void processBoxes(const float _dt);
     void boxTriesToStepToDown(Box& _box);
     void analyseBottomLine();
     void analyseSectors();
     void deleteMarkedBoxes();
-    void drawBoxes(const Drawer& _drawer) const;
 
     void processPlayer(const float _dt);
     bool playerTriesToStepToLeft();
     bool playerTriesToStepToRight();
     bool playerTriesToStepToUp();
     bool playerTriesToStepToDown();
-    void drawPlayer(const Drawer& _drawer) const;
 
     std::default_random_engine random_engine;
 

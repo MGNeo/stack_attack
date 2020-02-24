@@ -5,7 +5,7 @@
 
 sa::Game::Game()
   :
-  render_window(sf::VideoMode(800u, 600u), "stack_attack", sf::Style::Close)
+  render_window(sf::VideoMode(768u, 600u), "stack_attack", sf::Style::Close)
 {
 }
 

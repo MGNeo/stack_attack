@@ -3,12 +3,15 @@
 #include <cstdint>
 #include <SFML/Graphics.hpp>
 #include <DeliveryDirection.hpp>
+#include <list>
 
 namespace sa
 {
   class Delivery
   {
   public:
+
+    using List = std::list<Delivery>;
 
     Delivery(const DeliveryDirection _direction,
              const float _speed,
