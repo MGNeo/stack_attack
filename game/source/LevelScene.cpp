@@ -3,6 +3,7 @@
 sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
   Scene{ _resource_library },
+  NON_MOVABLE_COLOR{ 100u, 100u, 100u, 255u},
   field{ 12u, 9u },
   player{ 6u, 8u },
   random_engine{ clock() }
@@ -392,12 +393,15 @@ bool sa::LevelScene::playerTriesToStepToLeft()
             if (field.getCell(x - 2u, y).getOccupyingBox() == nullptr)
             {
               Box* const box = field.getCell(x - 1u, y).getOccupyingBox();
-              if (box->isReadyToStep() == true)
+              if (box->getColor() != NON_MOVABLE_COLOR)
               {
-                box->stepToLeft();
-                field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                player.stepToLeft();
-                return true;
+                if (box->isReadyToStep() == true)
+                {
+                  box->stepToLeft();
+                  field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                  player.stepToLeft();
+                  return true;
+                }
               }
             }
           }
@@ -422,12 +426,15 @@ bool sa::LevelScene::playerTriesToStepToLeft()
                   if (field.getCell(x - 2u, y).getOccupyingBox() == nullptr)
                   {
                     Box* const box = field.getCell(x - 1u, y).getOccupyingBox();
-                    if (box->isReadyToStep() == true)
+                    if (box->getColor() != NON_MOVABLE_COLOR)
                     {
-                      box->stepToLeft();
-                      field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                      player.stepToLeft();
-                      return true;
+                      if (box->isReadyToStep() == true)
+                      {
+                        box->stepToLeft();
+                        field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                        player.stepToLeft();
+                        return true;
+                      }
                     }
                   }
                 }
@@ -477,12 +484,15 @@ bool sa::LevelScene::playerTriesToStepToRight()
             if (field.getCell(x + 2u, y).getOccupyingBox() == nullptr)
             {
               Box* const box = field.getCell(x + 1u, y).getOccupyingBox();
-              if (box->isReadyToStep() == true)
+              if (box->getColor() != NON_MOVABLE_COLOR)
               {
-                box->stepToRight();
-                field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                player.stepToRight();
-                return true;
+                if (box->isReadyToStep() == true)
+                {
+                  box->stepToRight();
+                  field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                  player.stepToRight();
+                  return true;
+                }
               }
             }
           }
@@ -507,12 +517,15 @@ bool sa::LevelScene::playerTriesToStepToRight()
                   if (field.getCell(x + 2u, y).getOccupyingBox() == nullptr)
                   {
                     Box* const box = field.getCell(x + 1u, y).getOccupyingBox();
-                    if (box->isReadyToStep() == true)
+                    if (box->getColor() != NON_MOVABLE_COLOR)
                     {
-                      box->stepToRight();
-                      field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
-                      player.stepToRight();
-                      return true;
+                      if (box->isReadyToStep() == true)
+                      {
+                        box->stepToRight();
+                        field.getCell(box->getDestinationX(), box->getDestinationY()).setOccupingBox(box);
+                        player.stepToRight();
+                        return true;
+                      }
                     }
                   }
                 }
@@ -614,7 +627,7 @@ sf::Color sa::LevelScene::getRandomDeliveryColor()
                                       sf::Color::Blue,
                                       sf::Color::Green,
                                       sf::Color::Yellow,
-                                      sf::Color{155u, 155u, 155u, 255u} };
+                                      NON_MOVABLE_COLOR };
 
   std::uniform_int_distribution uid{ 0u, std::size(colors) - 1u };
 

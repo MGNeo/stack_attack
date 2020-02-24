@@ -24,7 +24,7 @@ namespace sa
 
   private:
 
-    // TODO: Make the processing for special boxes of gray color
+    const sf::Color NON_MOVABLE_COLOR;
 
     Field field;
     std::list<Delivery> deliveries;
