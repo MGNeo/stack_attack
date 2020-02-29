@@ -162,6 +162,8 @@
     <ClInclude Include="source\Box.hpp" />
     <ClInclude Include="source\Delivery.hpp" />
     <ClInclude Include="source\DeliveryDirection.hpp" />
+    <ClInclude Include="source\ParticleAcceptor.hpp" />
+    <ClInclude Include="source\ParticleVisitor.hpp" />
     <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\PlayerAnimation.hpp" />
     <ClInclude Include="source\PlayerAnimationState.hpp" />

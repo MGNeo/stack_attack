@@ -7,10 +7,12 @@
 #include <Player.hpp>
 #include <list>
 #include <random>
+#include <ParticleAcceptor.hpp>
+#include <ParticleVisitor.hpp>
 
 namespace sa
 {
-  class LevelScene : public Scene
+  class LevelScene : public Scene, public ParticleAcceptor
   {
   public:
 
@@ -30,6 +32,7 @@ namespace sa
     Delivery::List deliveries;
     Box::List boxes;
     Player player;
+    ParticleAcceptor::List particles;
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
@@ -60,4 +63,5 @@ namespace sa
     ptrdiff_t getRandomDeliveryTarget();
 
   };
+
 }
