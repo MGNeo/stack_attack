@@ -146,6 +146,7 @@
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Delivery.cpp" />
     <ClCompile Include="source\Dust.cpp" />
+    <ClCompile Include="source\Particle.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PlayerAnimation.cpp" />
     <ClCompile Include="source\Stepper.cpp" />

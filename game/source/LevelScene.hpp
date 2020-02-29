@@ -31,7 +31,9 @@ namespace sa
     Delivery::List deliveries;
     Box::List boxes;
     Player player;
-    Particle::List particles;
+    Particle::UList particles;
+
+    void processParticles(const float _dt);
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);

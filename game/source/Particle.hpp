@@ -1,5 +1,6 @@
 #pragma once
 
+#include <memory>
 #include <list>
 
 namespace sa
@@ -9,9 +10,10 @@ namespace sa
   {
   public:
 
-    using List = std::list<Particle>;
+    using Uptr = std::unique_ptr<Particle>;
+    using UList = std::list<Uptr>;
 
-
+    virtual ~Particle();
 
   };
 }

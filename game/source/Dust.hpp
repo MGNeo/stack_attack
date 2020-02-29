@@ -10,7 +10,6 @@ namespace sa
 
     Dust(const float _x, const float _y);
 
-
     float getX() const;
     float getY() const;
 
@@ -23,4 +22,5 @@ namespace sa
     float y;
 
   };
+
 }

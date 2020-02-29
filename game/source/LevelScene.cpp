@@ -1,4 +1,5 @@
 #include <LevelScene.hpp>
+#include <Dust.hpp>
 
 sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   :
@@ -39,6 +40,27 @@ void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 sa::Scene::Uptr sa::LevelScene::getNextScene()
 {
   return nullptr;
+}
+
+void sa::LevelScene::processParticles(const float _dt)
+{
+  for (auto& particle : particles)
+  {
+    {
+      Dust*const dust = dynamic_cast<Dust*const>(particle.get());
+      if (dust != nullptr)
+      {
+        //dustProcessing(dust);
+      } else {
+        continue;
+      }
+    }
+    // Coin
+    // ...
+
+    // Shard
+    // ...
+  }
 }
 
 void sa::LevelScene::drawDeliveries(const sa::Drawer& _drawer) const
