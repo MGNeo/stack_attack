@@ -57,6 +57,9 @@
     <ClCompile Include="source\Delivery.cpp">
       <Filter>Исходные файлы</Filter>
     </ClCompile>
+    <ClCompile Include="source\Dust.cpp">
+      <Filter>Исходные файлы</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="source\Game.hpp">
@@ -104,10 +107,10 @@
     <ClInclude Include="source\DeliveryDirection.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="source\ParticleVisitor.hpp">
+    <ClInclude Include="source\Dust.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
-    <ClInclude Include="source\ParticleAcceptor.hpp">
+    <ClInclude Include="source\Particle.hpp">
       <Filter>Файлы заголовков</Filter>
     </ClInclude>
   </ItemGroup>

@@ -7,12 +7,11 @@
 #include <Player.hpp>
 #include <list>
 #include <random>
-#include <ParticleAcceptor.hpp>
-#include <ParticleVisitor.hpp>
+#include <Particle.hpp>
 
 namespace sa
 {
-  class LevelScene : public Scene, public ParticleAcceptor
+  class LevelScene : public Scene
   {
   public:
 
@@ -32,7 +31,7 @@ namespace sa
     Delivery::List deliveries;
     Box::List boxes;
     Player player;
-    ParticleAcceptor::List particles;
+    Particle::List particles;
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
