@@ -6,8 +6,7 @@ sa::LevelScene::LevelScene(sa::ResourceLibrary& _resource_library)
   NON_MOVABLE_COLOR{ 100u, 100u, 100u, 255u},
   field{ 12u, 9u },
   player{ 6u, 8u },
-  random_engine{ clock() },
-  draw_subsystem{ {resource_library, field, deliveries, boxes, player} }
+  random_engine{ clock() }
 {
 }
 
@@ -32,12 +31,96 @@ void sa::LevelScene::process(const float _dt)
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const
 {
-  draw_subsystem.draw(_drawer);
+  drawBoxes(_drawer);
+  drawPlayer(_drawer);
+  drawDeliveries(_drawer);
 }
 
 sa::Scene::Uptr sa::LevelScene::getNextScene()
 {
   return nullptr;
+}
+
+void sa::LevelScene::drawDeliveries(const sa::Drawer& _drawer) const
+{
+  sf::Texture boxTexture = resource_library.getTexture("Box.png");
+  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.png");
+
+  sf::Sprite boxSprite;
+  boxSprite.setTexture(boxTexture, true);
+  boxSprite.setScale(8.f, 8.f);
+
+  sf::Sprite deliverySprite;
+  deliverySprite.setTexture(deliveryTexture, true);
+  deliverySprite.setScale(8.f, 8.f);
+
+  const ptrdiff_t begin_cell = -1;
+  const ptrdiff_t end_cell = field.getWidth();
+  // Signed overflow is possible but it is impossible.
+  const ptrdiff_t cell_difference = end_cell - begin_cell;
+
+  for (const auto& delivery : deliveries)
+  {
+    const float represented_progress = delivery.getProgress();
+    float represented_x{};
+
+    switch (delivery.getDirection())
+    {
+      case (DeliveryDirection::FROM_LEFT_TO_RIGHT):
+      {
+        represented_x = begin_cell + represented_progress * cell_difference;
+        break;
+      }
+      case (DeliveryDirection::FROM_RIGHT_TO_LEFT):
+      {
+        represented_x = end_cell - represented_progress * cell_difference;
+        break;
+      }
+    }
+
+    if (delivery.hasBox() == true)
+    {
+      boxSprite.setColor(delivery.getColor());
+      boxSprite.setPosition(represented_x * 64.f, 0.f);
+      _drawer.draw(boxSprite);
+    }
+
+    deliverySprite.setPosition(represented_x * 64.f, 0.f);
+    _drawer.draw(deliverySprite);
+  }
+}
+
+void sa::LevelScene::drawBoxes(const Drawer& _drawer) const
+{
+  sf::Texture texture = resource_library.getTexture("Box.png");
+
+  sf::Sprite sprite;
+  sprite.setTexture(texture, true);
+
+  //const float x_scale = 64.f / static_cast<float>(texture.getSize().x);
+  //const float y_scale = 64.f / static_cast<float>(texture.getSize().y);
+
+  sprite.setScale(8.f, 8.f);
+
+  for (const auto& box : boxes)
+  {
+    sprite.setColor(box.getColor());
+    sprite.setPosition(box.getRepresentedX() * 64.f, box.getRepresentedY() * 64.f);
+
+    _drawer.draw(sprite);
+  }
+}
+
+void sa::LevelScene::drawPlayer(const Drawer& _drawer) const
+{
+  sf::Texture texture = resource_library.getTexture("Player.png");
+
+  sf::Sprite sprite;
+  sprite.setTexture(texture, true);
+  sprite.setScale(8, 8);
+
+  sprite.setPosition(player.getRepresentedX() * 64.f, (player.getRepresentedY() - 1) * 64.f);
+  _drawer.draw(sprite);
 }
 
 void sa::LevelScene::processDeliveries(const float _dt)

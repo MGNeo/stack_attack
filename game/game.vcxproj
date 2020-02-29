@@ -89,6 +89,7 @@
       <ConformanceMode>true</ConformanceMode>
       <AdditionalIncludeDirectories>C:\Users\MGNeo\Desktop\stack_attack\game\source;C:\SFML-2.5.1\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <LanguageStandard>stdcpp17</LanguageStandard>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
     </ClCompile>
     <Link>
       <SubSystem>Console</SubSystem>
@@ -144,8 +145,6 @@
   <ItemGroup>
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Delivery.cpp" />
-    <ClCompile Include="source\LevelSceneDrawSubsystem.cpp" />
-    <ClCompile Include="source\LevelSceneDrawSubsystemLinks.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PlayerAnimation.cpp" />
     <ClCompile Include="source\Stepper.cpp" />
@@ -163,8 +162,6 @@
     <ClInclude Include="source\Box.hpp" />
     <ClInclude Include="source\Delivery.hpp" />
     <ClInclude Include="source\DeliveryDirection.hpp" />
-    <ClInclude Include="source\LevelSceneDrawSubsystem.hpp" />
-    <ClInclude Include="source\LevelSceneDrawSubsystemLinks.hpp" />
     <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\PlayerAnimation.hpp" />
     <ClInclude Include="source\PlayerAnimationState.hpp" />
