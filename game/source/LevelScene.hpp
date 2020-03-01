@@ -7,6 +7,7 @@
 #include <Player.hpp>
 #include <list>
 #include <random>
+#include <Shard.hpp>
 
 namespace sa
 {
@@ -30,6 +31,7 @@ namespace sa
     Delivery::List deliveries;
     Box::List boxes;
     Player player;
+    Shard::List shards;
 
     void processDeliveries(const float _dt);
     void generateDelivery(const float _dt);
@@ -51,13 +53,15 @@ namespace sa
     bool playerTriesToStepToDown();
     void drawPlayer(const Drawer& _drawer) const;
 
+    void processShards(const float _dt);
+    void deleteFallenShards();
+    void drawShards(const Drawer& _drawer) const;
+
     std::default_random_engine random_engine;
 
     // Generators:
-    DeliveryDirection getRandomDeliveryDirection();
-    sf::Color getRandomDeliveryColor();
-    float getRandomDeliverySpeed();
-    ptrdiff_t getRandomDeliveryTarget();
+    Delivery makeRandomDelivery();
+    Shard makeShard(const sa::Box& _box);
 
   };
 

@@ -27,6 +27,7 @@ void sa::LevelScene::process(const float _dt)
   processDeliveries(_dt);
   processBoxes(_dt);
   processPlayer(_dt);
+  processShards(_dt);
 }
 
 void sa::LevelScene::draw(const sa::Drawer& _drawer) const
@@ -34,6 +35,7 @@ void sa::LevelScene::draw(const sa::Drawer& _drawer) const
   drawBoxes(_drawer);
   drawPlayer(_drawer);
   drawDeliveries(_drawer);
+  drawShards(_drawer);
 }
 
 sa::Scene::Uptr sa::LevelScene::getNextScene()
@@ -143,12 +145,7 @@ void sa::LevelScene::generateDelivery(const float _dt)
   {
     timer = 0.f;
 
-    const auto direction = getRandomDeliveryDirection();
-    const auto speed = getRandomDeliverySpeed();
-    const auto color = getRandomDeliveryColor();
-    const auto target = getRandomDeliveryTarget();
-
-    deliveries.emplace_front(direction, speed, color, target );
+    deliveries.push_front(makeRandomDelivery());
   }
 }
 
@@ -323,6 +320,11 @@ void sa::LevelScene::deleteMarkedBoxes()
   {
     if (iterator->isMarked() == true)
     {
+      for (size_t i = 0; i < 10; ++i)
+      {
+        shards.push_front(makeShard(*iterator));
+      }
+
       field.getCell(iterator->getSourceX(), iterator->getSourceY()).setOccupingBox(nullptr);
       field.getCell(iterator->getDestinationX(), iterator->getDestinationY()).setOccupingBox(nullptr);
       iterator = boxes.erase(iterator);
@@ -603,49 +605,118 @@ bool sa::LevelScene::playerTriesToStepToDown()
   return false;
 }
 
-sa::DeliveryDirection sa::LevelScene::getRandomDeliveryDirection()
+void sa::LevelScene::processShards(const float _dt)
 {
-  std::uniform_int_distribution uid{ 0u, 1u };
-
-  switch (uid(random_engine))
+  for (auto& shard : shards)
   {
-    case (0u):
+    shard.setX(shard.getX() + shard.getVX() * _dt);
+    shard.setY(shard.getY() + shard.getVY() * _dt);
+
+    shard.reduceA(_dt);
+  }
+}
+
+void sa::LevelScene::deleteFallenShards()
+{
+  for (auto iterator = shards.begin(); iterator != shards.end();)
+  {
+    // TODO.
+    if (iterator->getColor().a == 0.f)
     {
-      return DeliveryDirection::FROM_LEFT_TO_RIGHT;
-      break;
-    }
-    case (1u):
-    {
-      return DeliveryDirection::FROM_RIGHT_TO_LEFT;
-      break;
+      iterator = shards.erase(iterator);
+    } else {
+      ++iterator;
     }
   }
-  throw std::runtime_error("sa::LevelScene::getRandomDeliveryDirection(), Unknown value of DeliveryDirection was find.");
 }
 
-sf::Color sa::LevelScene::getRandomDeliveryColor()
+void sa::LevelScene::drawShards(const Drawer& _drawer) const
 {
-  const static sf::Color colors[] = { sf::Color::Red,
-                                      sf::Color::Blue,
-                                      sf::Color::Green,
-                                      sf::Color::Yellow,
-                                      NON_MOVABLE_COLOR };
+  sf::RectangleShape rectangle;
 
-  std::uniform_int_distribution uid{ 0u, std::size(colors) - 1u };
+  for (auto& shard : shards)
+  {
+    rectangle.setSize({ 3.f, 3.f });
 
-  return colors[uid(random_engine)];
+    sf::Color represented_color = shard.getColor();
+    represented_color.a = static_cast<sf::Uint8>(shard.getA() * 255u);
+    rectangle.setFillColor(represented_color);
+
+    rectangle.setPosition(shard.getX() * 64.f, shard.getY() * 64.f);
+
+    _drawer.draw(rectangle);
+  }
 }
 
-float sa::LevelScene::getRandomDeliverySpeed()
+sa::Delivery sa::LevelScene::makeRandomDelivery()
 {
-  std::uniform_real_distribution urd{ 0.05f, 0.3f };
-  
-  return urd(random_engine);
+  DeliveryDirection direction{};
+  {
+    std::uniform_int_distribution uid{ 0u, 1u };
+    switch (uid(random_engine))
+    {
+      case (0u):
+      {
+        direction = DeliveryDirection::FROM_LEFT_TO_RIGHT;
+        break;
+      }
+      case (1u):
+      {
+        direction = DeliveryDirection::FROM_RIGHT_TO_LEFT;
+        break;
+      }
+      default:
+      {
+        throw std::runtime_error("sa::LevelScene::makeRandomDelivery(), unknown value of DeliveryDirection was found.");
+        break;
+      }
+    }
+  }
+
+  sf::Color color{};
+  {
+    const static sf::Color colors[] = { sf::Color::Red, sf::Color::Blue, sf::Color::Green, sf::Color::Yellow, NON_MOVABLE_COLOR };
+
+    std::uniform_int_distribution uid{ 0u, std::size(colors) - 1u };
+    color = colors[uid(random_engine)];
+  }
+
+  float speed{};
+  {
+    std::uniform_real_distribution urd{ 0.05f, 0.3f };
+    speed = urd(random_engine);
+  }
+
+  ptrdiff_t target{};
+  {
+    std::uniform_int_distribution uid{ 0u, field.getWidth() - 1u };
+    target = uid(random_engine);
+  }
+
+  return Delivery{ direction, speed, color, target };
 }
 
-ptrdiff_t sa::LevelScene::getRandomDeliveryTarget()
+sa::Shard sa::LevelScene::makeShard(const sa::Box& _box)
 {
-  std::uniform_int_distribution uid{ 0u, field.getWidth() - 1u };
+  std::uniform_real_distribution distribution_for_x{ 0.f, 1.f };
+  std::uniform_real_distribution distribution_for_y{ 0.f, 1.f };
+  const float x = _box.getRepresentedX() + distribution_for_x(random_engine);
+  const float y = _box.getRepresentedY() + distribution_for_y(random_engine);
 
-  return uid(random_engine);
+  std::uniform_real_distribution distribution_for_angle{ 0.f, 360.f };
+  std::uniform_real_distribution distribution_for_speed{ 0.1f, 0.4f };
+  const float angle = distribution_for_angle(random_engine);
+  const float speed = distribution_for_speed(random_engine);
+  const float vx = speed * cos(angle);
+  const float vy = speed * sin(angle);
+
+  const float a = 1.f;
+
+  std::uniform_real_distribution distribution_for_av{ 0.3f, 1.f };
+  const float av = distribution_for_av(random_engine);
+
+  const sf::Color color = _box.getColor();
+
+  return Shard(x, y, vx, vy, a, av, color);
+
 }
