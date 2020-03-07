@@ -5,7 +5,9 @@
 
 sa::Game::Game()
   :
-  render_window(sf::VideoMode(768u, 600u), "stack_attack", sf::Style::Close)
+  render_window(sf::VideoMode(game_settings.getWindowWidth(), game_settings.getWindowHeight()),
+                "stack_attack",
+                sf::Style::Close)
 {
 }
 
@@ -35,14 +37,14 @@ void sa::Game::play()
     clock.restart();
     accumulated_dt += time.asSeconds();
 
-    if (accumulated_dt > MIN_DT)
+    if (accumulated_dt > game_settings.getMinDt())
     {
       float normalized_dt;
-      if (accumulated_dt < MAX_DT)
+      if (accumulated_dt < game_settings.getMaxDt())
       {
         normalized_dt = accumulated_dt;
       } else {
-        normalized_dt = MAX_DT;
+        normalized_dt = game_settings.getMaxDt();
       }
 
       current_scene->process(normalized_dt);

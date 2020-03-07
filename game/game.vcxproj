@@ -145,6 +145,7 @@
   <ItemGroup>
     <ClCompile Include="source\Box.cpp" />
     <ClCompile Include="source\Delivery.cpp" />
+    <ClCompile Include="source\GameSettings.cpp" />
     <ClCompile Include="source\LevelSceneData.cpp" />
     <ClCompile Include="source\LevelSceneDrawHandler.cpp" />
     <ClCompile Include="source\LevelSceneProcessHandler.cpp" />
@@ -166,6 +167,7 @@
     <ClInclude Include="source\Box.hpp" />
     <ClInclude Include="source\Delivery.hpp" />
     <ClInclude Include="source\DeliveryDirection.hpp" />
+    <ClInclude Include="source\GameSettings.hpp" />
     <ClInclude Include="source\LevelSceneData.hpp" />
     <ClInclude Include="source\LevelSceneDrawHandler.hpp" />
     <ClInclude Include="source\LevelSceneProcessHandler.hpp" />

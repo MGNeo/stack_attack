@@ -22,9 +22,9 @@ namespace sa
   private:
 
     LevelSceneData data;
+    // TODO: Add ReactHandler if it is necessary.
     LevelSceneProcessHandler process_handler;
     LevelSceneDrawHandler draw_handler;
-    // TODO: Add ReactHandler if it is necessary.
   };
 
 }
