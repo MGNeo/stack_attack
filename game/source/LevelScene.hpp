@@ -24,7 +24,7 @@ namespace sa
     LevelSceneData data;
     LevelSceneProcessHandler process_handler;
     LevelSceneDrawHandler draw_handler;
-
+    // TODO: Add ReactHandler if it is necessary.
   };
 
 }
