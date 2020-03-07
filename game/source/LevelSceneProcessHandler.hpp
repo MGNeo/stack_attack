@@ -1,6 +1,7 @@
 #pragma once
 
 #include <LevelSceneData.hpp>
+#include <GameSettings.hpp>
 #include <random>
 
 namespace sa
@@ -9,7 +10,8 @@ namespace sa
   {
   public:
 
-    LevelSceneProcessHandler(sa::LevelSceneData& _data);
+    LevelSceneProcessHandler(LevelSceneData& _data,
+                             const GameSettings& _game_settings);
 
     void process(const float _dt);
 
@@ -18,6 +20,7 @@ namespace sa
     const sf::Color NON_MOVABLE_COLOR;
 
     LevelSceneData& data;
+    const GameSettings& game_settings;
 
     std::default_random_engine random_engine;
 
@@ -41,7 +44,6 @@ namespace sa
     void processShards(const float _dt);
     void deleteDisappearededShards();
 
-    // Generators:
     Delivery makeRandomDelivery();
     Shard makeShard(const sa::Box& _box);
   };

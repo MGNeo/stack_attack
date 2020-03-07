@@ -4,6 +4,9 @@ sa::GameSettings::GameSettings()
   :
   window_width{ 768 },
   window_height{ 600 },
+  field_width{ 13 },
+  field_height{ 9 },
+  sprite_size{ 64 },
   max_fps{ 120.f },
   min_fps{ 60.f },
   max_dt{ 1.f / min_fps },

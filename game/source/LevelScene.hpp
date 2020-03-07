@@ -11,11 +11,13 @@ namespace sa
   {
   public:
 
-    LevelScene(ResourceLibrary& _resource_library);
+    LevelScene(ResourceLibrary& _resource_library,
+               const Drawer& _drawer,
+               const GameSettings& _game_settings);
 
     void react(const sf::Event& _event) override;
     void process(const float _dt) override;
-    void draw(const Drawer& _drawer) const override;
+    void draw() const override;
 
     Uptr getNextScene() override;
 

@@ -1,19 +1,10 @@
 #include <LevelSceneData.hpp>
 
-// TODO: Perhaps, we need special settings for constructing of LevelSceneData.
-sa::LevelSceneData::LevelSceneData(ResourceLibrary& _resource_library,
-                                   const size_t _field_width,
-                                   const size_t _field_height)
+sa::LevelSceneData::LevelSceneData(const GameSettings& _game_settings)
   :
-  resource_library{ _resource_library },
-  field{ _field_width, _field_height },
-  player{ _field_width / 2, _field_height - 1u }
+  field{ _game_settings.getFieldWidth(), _game_settings.getFieldHeight() },
+  player{ _game_settings.getFieldWidth() / 2, _game_settings.getFieldHeight() - 1 }
 {
-}
-
-sa::ResourceLibrary& sa::LevelSceneData::accessToResourceLibrary()
-{
-  return resource_library;
 }
 
 sa::Field& sa::LevelSceneData::accessToField()

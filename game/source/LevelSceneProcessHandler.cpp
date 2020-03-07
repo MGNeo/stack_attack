@@ -1,9 +1,11 @@
 #include <LevelSceneProcessHandler.hpp>
 
-sa::LevelSceneProcessHandler::LevelSceneProcessHandler(sa::LevelSceneData& _data)
+sa::LevelSceneProcessHandler::LevelSceneProcessHandler(LevelSceneData& _data,
+                                                       const GameSettings& _game_settings)
   :
   NON_MOVABLE_COLOR{ 155, 155, 155, 255 },
   data{ _data },
+  game_settings{ _game_settings },
   random_engine{ clock() + static_cast<int>(time(NULL)) }
 {
 }
@@ -32,6 +34,7 @@ void sa::LevelSceneProcessHandler::generateDelivery(const float _dt)
   static float timer;
   timer += _dt;
 
+  // TODO: Take this info from game_settings.
   if ((data.accessToDeliveries().size() < 5) && (timer >= 1.f))
   {
     timer = 0.f;

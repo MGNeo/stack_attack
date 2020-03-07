@@ -1,44 +1,48 @@
 #include <LevelSceneDrawHandler.hpp>
 
-sa::LevelSceneDrawHandler::LevelSceneDrawHandler(LevelSceneData& _data)
+sa::LevelSceneDrawHandler::LevelSceneDrawHandler(ResourceLibrary& _resource_library,
+                                                 const Drawer& _drawer,
+                                                 LevelSceneData& _data,
+                                                 const GameSettings& _game_settings)
   :
-  data{ _data}
+  resource_library{ _resource_library },
+  drawer{ _drawer },
+  data{ _data},
+  game_settings{ _game_settings }
 {
 }
 
-void sa::LevelSceneDrawHandler::draw(const sa::Drawer& _drawer) const
+void sa::LevelSceneDrawHandler::draw() const
 {
-  drawBoxes(_drawer);
-  drawDeliveries(_drawer);
-  drawShards(_drawer);
-  drawPlayer(_drawer);
+  drawBoxes();
+  drawDeliveries();
+  drawShards();
+  drawPlayer();
 }
 
-void sa::LevelSceneDrawHandler::drawBoxes(const Drawer& _drawer) const
+void sa::LevelSceneDrawHandler::drawBoxes() const
 {
-  sf::Texture texture = data.accessToResourceLibrary().getTexture("Box.png");
+  sf::Texture texture = resource_library.getTexture("Box.png");
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
 
-  //const float x_scale = 64.f / static_cast<float>(texture.getSize().x);
-  //const float y_scale = 64.f / static_cast<float>(texture.getSize().y);
-
+  // TODO: Take this info from game settings.
   sprite.setScale(8.f, 8.f);
 
   for (const auto& box : data.accessToBoxes())
   {
     sprite.setColor(box.getColor());
-    sprite.setPosition(box.getRepresentedX() * 64.f, box.getRepresentedY() * 64.f);
+    sprite.setPosition(box.getRepresentedX() * game_settings.getSpriteSize(), box.getRepresentedY() * game_settings.getSpriteSize());
 
-    _drawer.draw(sprite);
+    drawer.draw(sprite);
   }
 }
 
-void sa::LevelSceneDrawHandler::drawDeliveries(const sa::Drawer& _drawer) const
+void sa::LevelSceneDrawHandler::drawDeliveries() const
 {
-  sf::Texture boxTexture = data.accessToResourceLibrary().getTexture("Box.png");
-  sf::Texture deliveryTexture = data.accessToResourceLibrary().getTexture("Delivery.png");
+  sf::Texture boxTexture = resource_library.getTexture("Box.png");
+  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.png");
 
   sf::Sprite boxSprite;
   boxSprite.setTexture(boxTexture, true);
@@ -46,6 +50,7 @@ void sa::LevelSceneDrawHandler::drawDeliveries(const sa::Drawer& _drawer) const
 
   sf::Sprite deliverySprite;
   deliverySprite.setTexture(deliveryTexture, true);
+  // TODO: Correct scale according to sprite size from game settings.
   deliverySprite.setScale(8.f, 8.f);
 
   const ptrdiff_t begin_cell = -1;
@@ -75,41 +80,44 @@ void sa::LevelSceneDrawHandler::drawDeliveries(const sa::Drawer& _drawer) const
     if (delivery.hasBox() == true)
     {
       boxSprite.setColor(delivery.getColor());
-      boxSprite.setPosition(represented_x * 64.f, 0.f);
-      _drawer.draw(boxSprite);
+      boxSprite.setPosition(represented_x * game_settings.getSpriteSize(), 0.f);
+      drawer.draw(boxSprite);
     }
 
-    deliverySprite.setPosition(represented_x * 64.f, 0.f);
-    _drawer.draw(deliverySprite);
+    deliverySprite.setPosition(represented_x * game_settings.getSpriteSize(), 0.f);
+    drawer.draw(deliverySprite);
   }
 }
 
-void sa::LevelSceneDrawHandler::drawPlayer(const Drawer& _drawer) const
+void sa::LevelSceneDrawHandler::drawPlayer() const
 {
-  sf::Texture texture = data.accessToResourceLibrary().getTexture("Player.png");
+  sf::Texture texture = resource_library.getTexture("Player.png");
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
+  // TODO: Correct scale according to sprite size from game settings.
   sprite.setScale(8, 8);
 
-  sprite.setPosition(data.accessToPlayer().getRepresentedX() * 64.f, (data.accessToPlayer().getRepresentedY() - 1) * 64.f);
-  _drawer.draw(sprite);
+  sprite.setPosition(data.accessToPlayer().getRepresentedX() * game_settings.getSpriteSize(),
+                     (data.accessToPlayer().getRepresentedY() - 1) * game_settings.getSpriteSize());
+  drawer.draw(sprite);
 }
 
-void sa::LevelSceneDrawHandler::drawShards(const Drawer& _drawer) const
+void sa::LevelSceneDrawHandler::drawShards() const
 {
   sf::RectangleShape rectangle;
 
+  // TODO: Take this info from game settings.
+  rectangle.setSize({ 3.f, 3.f });
+
   for (auto& shard : data.accessToShards())
   {
-    rectangle.setSize({ 3.f, 3.f });
-
     sf::Color represented_color = shard.getColor();
     represented_color.a = static_cast<sf::Uint8>(shard.getA() * 255u);
     rectangle.setFillColor(represented_color);
 
-    rectangle.setPosition(shard.getX() * 64.f, shard.getY() * 64.f);
+    rectangle.setPosition(shard.getX() * game_settings.getSpriteSize(), shard.getY() * game_settings.getSpriteSize());
 
-    _drawer.draw(rectangle);
+    drawer.draw(rectangle);
   }
 }

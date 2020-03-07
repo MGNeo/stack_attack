@@ -10,19 +10,24 @@ namespace sa
   {
   public:
 
-    LevelSceneDrawHandler(LevelSceneData& _data);
+    LevelSceneDrawHandler(ResourceLibrary& _resource_library,
+                          const Drawer& _drawer,
+                          LevelSceneData& _data,
+                          const GameSettings& _game_settings);
 
-    void draw(const sa::Drawer& _drawer) const;
+    void draw() const;
 
   private:
 
+    ResourceLibrary& resource_library;
+    const Drawer& drawer;
     LevelSceneData& data;
+    const GameSettings& game_settings;
 
-    void drawBoxes(const Drawer& _drawer) const;
-    void drawDeliveries(const Drawer& _drawer) const;
-    void drawShards(const Drawer& _drawer) const;
-    void drawPlayer(const Drawer& _drawer) const;
-
+    void drawBoxes() const;
+    void drawDeliveries() const;
+    void drawShards() const;
+    void drawPlayer() const;
 
   };
 }

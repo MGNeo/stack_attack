@@ -1,6 +1,6 @@
 #pragma once
 
-#include <ResourceLibrary.hpp>
+#include <GameSettings.hpp>
 #include <Field.hpp>
 #include <Delivery.hpp>
 #include <Box.hpp>
@@ -13,11 +13,8 @@ namespace sa
   {
   public:
 
-    LevelSceneData(ResourceLibrary& _resource_library,
-                   const size_t _field_width,
-                   const size_t _field_height);
+    LevelSceneData(const GameSettings& _game_settings);
 
-    ResourceLibrary& accessToResourceLibrary();
     Field& accessToField();
     Delivery::List& accessToDeliveries();
     Box::List& accessToBoxes();
@@ -26,7 +23,6 @@ namespace sa
 
   private:
 
-    ResourceLibrary& resource_library;
     Field field;
     Delivery::List deliveries;
     Box::List boxes;

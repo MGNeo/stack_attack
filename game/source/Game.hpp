@@ -2,6 +2,7 @@
 
 #include <GameSettings.hpp>
 #include <ResourceLibrary.hpp>
+#include <Drawer.hpp>
 
 namespace sa
 {
@@ -21,6 +22,6 @@ namespace sa
     // Perhaps, it's bug.
     sf::RenderWindow render_window;
     ResourceLibrary resource_library;
-
+    Drawer drawer;
   };
 }

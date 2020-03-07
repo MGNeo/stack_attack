@@ -13,9 +13,6 @@ namespace sa
 
     void draw(const sf::Drawable& _drawable) const;
 
-    size_t getWindowWidth() const;
-    size_t getWindowHeight() const;
-
   private:
 
     sf::RenderWindow& render_window;

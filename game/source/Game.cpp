@@ -7,15 +7,14 @@ sa::Game::Game()
   :
   render_window(sf::VideoMode(game_settings.getWindowWidth(), game_settings.getWindowHeight()),
                 "stack_attack",
-                sf::Style::Close)
+                sf::Style::Close),
+  drawer{ render_window }
 {
 }
 
 void sa::Game::play()
 {
-  Scene::Uptr current_scene = std::make_unique<LevelScene>(resource_library);
-
-  const Drawer displayer{ render_window };
+  Scene::Uptr current_scene = std::make_unique<LevelScene>(resource_library, drawer, game_settings);
 
   sf::Clock clock;
   float accumulated_dt = 0.f;
@@ -50,7 +49,7 @@ void sa::Game::play()
       current_scene->process(normalized_dt);
 
       render_window.clear();
-      current_scene->draw(displayer);
+      current_scene->draw();
       render_window.display();
 
       accumulated_dt = 0.f;
