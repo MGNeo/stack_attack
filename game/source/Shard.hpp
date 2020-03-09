@@ -24,7 +24,8 @@ namespace sa
 
     float getA() const;
 
-    void update(const float _dt);
+    void updatePosition(const float _dt);
+    void updateAlpha(const float _dt);
 
     sf::Color getColor() const;
 

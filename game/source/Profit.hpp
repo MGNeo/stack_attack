@@ -22,7 +22,7 @@ namespace sa
 
     float getA() const;
 
-    void update(const float _dt);
+    void updateAlpha(const float _dt);
 
   private:
 

@@ -33,10 +33,14 @@ float sa::Shard::getA() const
   return a;
 }
 
-void sa::Shard::update(const float _dt)
+void sa::Shard::updatePosition(const float _dt)
 {
   x += _dt * vx;
   y += _dt * vy;
+}
+
+void sa::Shard::updateAlpha(const float _dt)
+{
   a -= _dt * va;
   if (a < 0.f)
   {

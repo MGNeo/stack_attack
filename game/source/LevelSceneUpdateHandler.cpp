@@ -104,7 +104,7 @@ void sa::LevelSceneUpdateHandler::updateBoxes(const float _dt)
 {
   for (auto& box : data.accessToBoxes())
   {
-    box.update(_dt);
+    box.updateProgress(_dt);
     boxTriesToStepToDown(box);
   }
   analyseBottomLine();
@@ -262,7 +262,7 @@ void sa::LevelSceneUpdateHandler::updatePlayer(const float _dt)
       return;
     }
   }
-  data.accessToPlayer().update(_dt);
+  data.accessToPlayer().updateProgress(_dt);
 }
 
 bool sa::LevelSceneUpdateHandler::playerTriesToStepToLeft()
@@ -502,7 +502,8 @@ void sa::LevelSceneUpdateHandler::updateShards(const float _dt)
 {
   for (auto& shard : data.accessToShards())
   {
-    shard.update(_dt);
+    shard.updatePosition(_dt);
+    shard.updateAlpha(_dt);
   }
 }
 
@@ -524,7 +525,7 @@ void sa::LevelSceneUpdateHandler::updateProfits(const float _dt)
 {
   for (auto& profit : data.accessToProfits())
   {
-    profit.update(_dt);
+    profit.updateAlpha(_dt);
   }
 }
 

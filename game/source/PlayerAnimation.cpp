@@ -33,7 +33,7 @@ void sa::PlayerAnimation::fall()
   progress = 0.f;
 }
 
-void sa::PlayerAnimation::update(const float _dt)
+void sa::PlayerAnimation::updateProgress(const float _dt)
 {
   progress += speed * _dt;
   if (progress > SEQUENCES_LENGTHS[static_cast<size_t>(state)])
