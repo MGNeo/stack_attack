@@ -9,7 +9,9 @@ namespace sa
   {
   public:
 
-    Player(const ptrdiff_t _x, const ptrdiff_t _y);
+    Player(const ptrdiff_t _x,
+           const ptrdiff_t _y,
+           const float _speed);
 
     bool isReadyToStep() const;
 

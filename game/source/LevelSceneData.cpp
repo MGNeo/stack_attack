@@ -3,7 +3,7 @@
 sa::LevelSceneData::LevelSceneData(const GameSettings& _game_settings)
   :
   field{ _game_settings.getFieldWidth(), _game_settings.getFieldHeight() },
-  player{ _game_settings.getFieldWidth() / 2, _game_settings.getFieldHeight() - 1 }
+  player{ _game_settings.getFieldWidth() / 2, _game_settings.getFieldHeight() - 1, _game_settings.getStepperSpeed() }
 {
 }
 
@@ -30,4 +30,9 @@ sa::Player& sa::LevelSceneData::accessToPlayer()
 sa::Shard::List& sa::LevelSceneData::accessToShards()
 {
   return shards;
+}
+
+sa::Profit::List& sa::LevelSceneData::accessToProfits()
+{
+  return profits;
 }

@@ -11,26 +11,20 @@ namespace sa
 
     using List = std::list<Shard>;
 
-    Shard(const float _x, const float _y,
-          const float _vx, const float _vy,
+    Shard(const float _x,
+          const float _y,
+          const float _vx,
+          const float _vy,
           const float _a,
-          const float _av,
+          const float _va,
           const sf::Color _color);
 
     float getX() const;
     float getY() const;
 
-    void setX(const float _x);
-    void setY(const float _y);
-
-    float getVX() const;
-    float getVY() const;
-
-    void setVX(const float _vx);
-    void setVY(const float _vy);
-
     float getA() const;
-    void reduceA(const float _dt);
+
+    void process(const float _dt);
 
     sf::Color getColor() const;
 
@@ -43,7 +37,7 @@ namespace sa
     float vy;
 
     float a;
-    const float av;
+    const float va;
 
     const sf::Color color;
 

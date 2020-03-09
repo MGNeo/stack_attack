@@ -1,8 +1,10 @@
 #include <Player.hpp>
 
-sa::Player::Player(const ptrdiff_t _x, const ptrdiff_t _y)
+sa::Player::Player(const ptrdiff_t _x,
+                   const ptrdiff_t _y,
+                   const float _speed)
   :
-  stepper{ _x, _y }
+  stepper{ _x, _y, _speed }
 {
 }
 

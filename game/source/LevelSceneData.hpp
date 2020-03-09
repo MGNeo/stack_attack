@@ -6,6 +6,7 @@
 #include <Box.hpp>
 #include <Player.hpp>
 #include <Shard.hpp>
+#include <Profit.hpp>
 
 namespace sa
 {
@@ -20,6 +21,7 @@ namespace sa
     Box::List& accessToBoxes();
     Player& accessToPlayer();
     Shard::List& accessToShards();
+    Profit::List& accessToProfits();
 
   private:
 
@@ -28,6 +30,7 @@ namespace sa
     Box::List boxes;
     Player player;
     Shard::List shards;
+    Profit::List profits;
 
   };
 }

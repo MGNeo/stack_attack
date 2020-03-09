@@ -44,7 +44,14 @@ namespace sa
     void processShards(const float _dt);
     void deleteDisappearededShards();
 
-    Delivery makeRandomDelivery();
-    Shard makeShard(const sa::Box& _box);
+    void processProfits(const float _dt);
+    void deleteDisappearedProfits();
+
+    // Generators:
+    void addRandomDelivery();
+    void addBox(const sa::Delivery& _delivery);
+    void addShards(const sa::Box& _box);
+    void addProfit(const sa::Box& _box);
+
   };
 }

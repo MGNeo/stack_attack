@@ -12,7 +12,10 @@ namespace sa
 
     using List = std::list<Box>;
 
-    Box(const ptrdiff_t _x, const ptrdiff_t _y, const sf::Color _color = sf::Color::White);
+    Box(const ptrdiff_t _x,
+        const ptrdiff_t _y,
+        const float _speed,
+        const sf::Color _color = sf::Color::White);
 
     const sf::Color& getColor() const;
 

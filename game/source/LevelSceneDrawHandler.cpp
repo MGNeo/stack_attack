@@ -17,6 +17,7 @@ void sa::LevelSceneDrawHandler::draw() const
   drawBoxes();
   drawDeliveries();
   drawShards();
+  drawProfits();
   drawPlayer();
 }
 
@@ -27,13 +28,19 @@ void sa::LevelSceneDrawHandler::drawBoxes() const
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
 
-  // TODO: Take this info from game settings.
-  sprite.setScale(8.f, 8.f);
+  const float x_scale = game_settings.getCellSize() / texture.getSize().x;
+  const float y_scale = game_settings.getCellSize() / texture.getSize().y;
+
+  sprite.setScale(x_scale, y_scale);
 
   for (const auto& box : data.accessToBoxes())
   {
     sprite.setColor(box.getColor());
-    sprite.setPosition(box.getRepresentedX() * game_settings.getSpriteSize(), box.getRepresentedY() * game_settings.getSpriteSize());
+
+    const float represented_x = box.getRepresentedX() * game_settings.getCellSize();
+    const float represented_y = box.getRepresentedY() * game_settings.getCellSize();
+
+    sprite.setPosition(represented_x, represented_y);
 
     drawer.draw(sprite);
   }
@@ -41,17 +48,27 @@ void sa::LevelSceneDrawHandler::drawBoxes() const
 
 void sa::LevelSceneDrawHandler::drawDeliveries() const
 {
-  sf::Texture boxTexture = resource_library.getTexture("Box.png");
-  sf::Texture deliveryTexture = resource_library.getTexture("Delivery.png");
+  sf::Texture box_texture = resource_library.getTexture("Box.png");
+  sf::Sprite box_sprite;
+  box_sprite.setTexture(box_texture, true);
 
-  sf::Sprite boxSprite;
-  boxSprite.setTexture(boxTexture, true);
-  boxSprite.setScale(8.f, 8.f);
+  {
+    const float x_scale = game_settings.getCellSize() / box_texture.getSize().x;
+    const float y_scale = game_settings.getCellSize() / box_texture.getSize().y;
 
-  sf::Sprite deliverySprite;
-  deliverySprite.setTexture(deliveryTexture, true);
-  // TODO: Correct scale according to sprite size from game settings.
-  deliverySprite.setScale(8.f, 8.f);
+    box_sprite.setScale(x_scale, y_scale);
+  }
+
+  sf::Texture delivery_texture = resource_library.getTexture("Delivery.png");
+  sf::Sprite delivery_sprite;
+  delivery_sprite.setTexture(delivery_texture, true);
+  
+  {
+    const float x_scale = game_settings.getCellSize() / delivery_texture.getSize().x;
+    const float y_scale = (0.5f * game_settings.getCellSize()) / delivery_texture.getSize().y;
+
+    delivery_sprite.setScale(x_scale, y_scale);
+  }
 
   const ptrdiff_t begin_cell = -1;
   const ptrdiff_t end_cell = data.accessToField().getWidth();
@@ -77,15 +94,69 @@ void sa::LevelSceneDrawHandler::drawDeliveries() const
       }
     }
 
+    represented_x *= game_settings.getCellSize(), 0.f;
+
     if (delivery.hasBox() == true)
     {
-      boxSprite.setColor(delivery.getColor());
-      boxSprite.setPosition(represented_x * game_settings.getSpriteSize(), 0.f);
-      drawer.draw(boxSprite);
+      box_sprite.setColor(delivery.getColor());
+      box_sprite.setPosition(represented_x, 0.f);
+      drawer.draw(box_sprite);
     }
 
-    deliverySprite.setPosition(represented_x * game_settings.getSpriteSize(), 0.f);
-    drawer.draw(deliverySprite);
+    delivery_sprite.setPosition(represented_x, 0.f);
+    drawer.draw(delivery_sprite);
+  }
+}
+
+void sa::LevelSceneDrawHandler::drawShards() const
+{
+  sf::RectangleShape rectangle;
+
+  rectangle.setSize({game_settings.getShardSize(), game_settings.getShardSize()});
+
+  // TODO: Set origin to center.
+
+  for (auto& shard : data.accessToShards())
+  {
+    sf::Color represented_color = shard.getColor();
+    represented_color.a = static_cast<sf::Uint8>(shard.getA() * 255u);
+    rectangle.setFillColor(represented_color);
+
+    const float represented_x = shard.getX() * game_settings.getCellSize();
+    const float represented_y = shard.getY() * game_settings.getCellSize();
+
+    rectangle.setPosition(represented_x, represented_y);
+
+    drawer.draw(rectangle);
+  }
+}
+
+void sa::LevelSceneDrawHandler::drawProfits() const
+{
+  sf::Text text;
+
+  text.setFont(resource_library.getFont("Default.ttf"));
+
+  // TODO: Take this info from game settings.
+  text.setCharacterSize(25);
+
+  for (const auto& profit : data.accessToProfits())
+  {
+    text.setString(std::to_string(profit.getCount()));
+
+    sf::Color represented_color = sf::Color::White;
+    represented_color.a = static_cast<sf::Uint8>(profit.getA() * 255u);
+    text.setFillColor(represented_color);
+
+    const auto local_bounds = text.getLocalBounds();
+    text.setOrigin(local_bounds.width / 2.f, local_bounds.height / 2.f);
+
+    const float represented_x = profit.getX() * game_settings.getCellSize();
+    const float represented_y = profit.getY() * game_settings.getCellSize();
+
+    text.setPosition(represented_x, represented_y);
+
+    drawer.draw(text);
   }
 }
 
@@ -95,29 +166,16 @@ void sa::LevelSceneDrawHandler::drawPlayer() const
 
   sf::Sprite sprite;
   sprite.setTexture(texture, true);
-  // TODO: Correct scale according to sprite size from game settings.
-  sprite.setScale(8, 8);
+  
+  const float x_scale = game_settings.getPlayerWidth() / texture.getSize().x;
+  const float y_scale = game_settings.getPlayerHeight() / texture.getSize().y;
 
-  sprite.setPosition(data.accessToPlayer().getRepresentedX() * game_settings.getSpriteSize(),
-                     (data.accessToPlayer().getRepresentedY() - 1) * game_settings.getSpriteSize());
+  sprite.setScale(x_scale, y_scale);
+
+  const float represented_x = data.accessToPlayer().getRepresentedX() * game_settings.getCellSize();
+  const float represented_y = (data.accessToPlayer().getRepresentedY() - 1) * game_settings.getCellSize();
+
+  sprite.setPosition(represented_x, represented_y);
+
   drawer.draw(sprite);
-}
-
-void sa::LevelSceneDrawHandler::drawShards() const
-{
-  sf::RectangleShape rectangle;
-
-  // TODO: Take this info from game settings.
-  rectangle.setSize({ 3.f, 3.f });
-
-  for (auto& shard : data.accessToShards())
-  {
-    sf::Color represented_color = shard.getColor();
-    represented_color.a = static_cast<sf::Uint8>(shard.getA() * 255u);
-    rectangle.setFillColor(represented_color);
-
-    rectangle.setPosition(shard.getX() * game_settings.getSpriteSize(), shard.getY() * game_settings.getSpriteSize());
-
-    drawer.draw(rectangle);
-  }
 }

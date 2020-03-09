@@ -1,19 +1,22 @@
 #include <Stepper.hpp>
 #include <stdexcept>
 
-sa::Stepper::Stepper(const ptrdiff_t _x, const ptrdiff_t _y)
+sa::Stepper::Stepper(const ptrdiff_t _x,
+                     const ptrdiff_t _y,
+                     const float _speed)
   :
   source_x{ _x },
   source_y{ _y },
   destination_x{ _x },
   destination_y{ _y },
-  progress{ 1.f }
+  progress{ 1.f },
+  speed{ _speed }
 {
 }
 
 void sa::Stepper::process(const float _progress)
 {
-  progress += _progress;
+  progress += speed * _progress;
   if (progress > 1.f)
   {
     progress = 1.f;

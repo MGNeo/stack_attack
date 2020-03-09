@@ -1,8 +1,11 @@
 #include <Box.hpp>
 
-sa::Box::Box(const ptrdiff_t _x, const ptrdiff_t _y, const sf::Color _color)
+sa::Box::Box(const ptrdiff_t _x,
+             const ptrdiff_t _y,
+             const float _speed,
+             const sf::Color _color)
   :
-  Stepper{ _x, _y },
+  Stepper{ _x, _y, _speed },
   color{ _color },
   mark{ false }
 {

@@ -16,6 +16,7 @@ void sa::LevelSceneProcessHandler::process(const float _dt)
   processBoxes(_dt);
   processPlayer(_dt);
   processShards(_dt);
+  processProfits(_dt);
 }
 
 void sa::LevelSceneProcessHandler::processDeliveries(const float _dt)
@@ -39,7 +40,7 @@ void sa::LevelSceneProcessHandler::generateDelivery(const float _dt)
   {
     timer = 0.f;
 
-    data.accessToDeliveries().push_front(makeRandomDelivery());
+    addRandomDelivery();
   }
 }
 
@@ -81,7 +82,7 @@ void sa::LevelSceneProcessHandler::analyseTargetOfDelivery(Delivery& _delivery)
     if (need_to_throw == true)
     {
       _delivery.throwBox();
-      data.accessToBoxes().push_front({ _delivery.getTarget(), 0u, _delivery.getColor() });
+      addBox(_delivery);
     }
   }
 }
@@ -103,7 +104,7 @@ void sa::LevelSceneProcessHandler::processBoxes(const float _dt)
 {
   for (auto& box : data.accessToBoxes())
   {
-    box.process(_dt * 2);
+    box.process(_dt);
     boxTriesToStepToDown(box);
   }
   analyseBottomLine();
@@ -214,10 +215,8 @@ void sa::LevelSceneProcessHandler::deleteMarkedBoxes()
   {
     if (iterator->isMarked() == true)
     {
-      for (size_t i = 0; i < 10; ++i)
-      {
-        data.accessToShards().push_front(makeShard(*iterator));
-      }
+      addShards(*iterator);
+      addProfit(*iterator);
 
       data.accessToField().getCell(iterator->getSourceX(), iterator->getSourceY()).setOccupingBox(nullptr);
       data.accessToField().getCell(iterator->getDestinationX(), iterator->getDestinationY()).setOccupingBox(nullptr);
@@ -263,7 +262,7 @@ void sa::LevelSceneProcessHandler::processPlayer(const float _dt)
       return;
     }
   }
-  data.accessToPlayer().process(_dt * 2);
+  data.accessToPlayer().process(_dt);
 }
 
 bool sa::LevelSceneProcessHandler::playerTriesToStepToLeft()
@@ -503,10 +502,7 @@ void sa::LevelSceneProcessHandler::processShards(const float _dt)
 {
   for (auto& shard : data.accessToShards())
   {
-    shard.setX(shard.getX() + shard.getVX() * _dt);
-    shard.setY(shard.getY() + shard.getVY() * _dt);
-
-    shard.reduceA(_dt);
+    shard.process(_dt);
   }
 }
 
@@ -515,7 +511,7 @@ void sa::LevelSceneProcessHandler::deleteDisappearededShards()
   for (auto iterator = data.accessToShards().begin(); iterator != data.accessToShards().end();)
   {
     // TODO.
-    if (iterator->getColor().a == 0.f)
+    if (iterator->getA() == 0.f)
     {
       iterator = data.accessToShards().erase(iterator);
     } else {
@@ -524,8 +520,30 @@ void sa::LevelSceneProcessHandler::deleteDisappearededShards()
   }
 }
 
+void sa::LevelSceneProcessHandler::processProfits(const float _dt)
+{
+  for (auto& profit : data.accessToProfits())
+  {
+    profit.process(_dt);
+  }
+}
+
+void sa::LevelSceneProcessHandler::deleteDisappearedProfits()
+{
+  for (auto iterator = data.accessToProfits().begin(); iterator != data.accessToProfits().end();)
+  {
+    // TODO.
+    if (iterator->getA() == 0.f)
+    {
+      iterator = data.accessToProfits().erase(iterator);
+    } else {
+      ++iterator;
+    }
+  }
+}
+
 // Generators:
-sa::Delivery sa::LevelSceneProcessHandler::makeRandomDelivery()
+void sa::LevelSceneProcessHandler::addRandomDelivery()
 {
   DeliveryDirection direction{};
   {
@@ -544,7 +562,7 @@ sa::Delivery sa::LevelSceneProcessHandler::makeRandomDelivery()
       }
       default:
       {
-        throw std::runtime_error("sa::LevelSceneProcessHandler::makeRandomDelivery(), unknown value of DeliveryDirection was found.");
+        throw std::runtime_error("sa::LevelSceneProcessHandler::addRandomDelivery(), unknown value of DeliveryDirection was found.");
         break;
       }
     }
@@ -560,7 +578,7 @@ sa::Delivery sa::LevelSceneProcessHandler::makeRandomDelivery()
 
   float speed{};
   {
-    std::uniform_real_distribution urd{ 0.05f, 0.3f };
+    std::uniform_real_distribution urd{ game_settings.getMinDeliverySpeed() , game_settings.getMaxDeliverySpeed() };
     speed = urd(random_engine);
   }
 
@@ -570,29 +588,45 @@ sa::Delivery sa::LevelSceneProcessHandler::makeRandomDelivery()
     target = uid(random_engine);
   }
 
-  return Delivery{ direction, speed, color, target };
+  data.accessToDeliveries().emplace_front( direction, speed, color, target );
 }
 
-sa::Shard sa::LevelSceneProcessHandler::makeShard(const sa::Box& _box)
+void sa::LevelSceneProcessHandler::addBox(const sa::Delivery& _delivery)
 {
+  data.accessToBoxes().emplace_front(_delivery.getTarget(), 0u, game_settings.getStepperSpeed(), _delivery.getColor());
+}
+
+void sa::LevelSceneProcessHandler::addShards(const sa::Box& _box)
+{
+  // TODO: Take this info from game settings.
   std::uniform_real_distribution distribution_for_x{ 0.f, 1.f };
   std::uniform_real_distribution distribution_for_y{ 0.f, 1.f };
-  const float x = _box.getRepresentedX() + distribution_for_x(random_engine);
-  const float y = _box.getRepresentedY() + distribution_for_y(random_engine);
-
   std::uniform_real_distribution distribution_for_angle{ 0.f, 360.f };
   std::uniform_real_distribution distribution_for_speed{ 0.1f, 0.4f };
-  const float angle = distribution_for_angle(random_engine);
-  const float speed = distribution_for_speed(random_engine);
-  const float vx = speed * cos(angle);
-  const float vy = speed * sin(angle);
-
-  const float a = 1.f;
-
   std::uniform_real_distribution distribution_for_av{ 0.3f, 1.f };
-  const float av = distribution_for_av(random_engine);
 
-  const sf::Color color = _box.getColor();
+  for (size_t s = 0; s < game_settings.getShardsCount(); ++s)
+  {
+    const float x = _box.getRepresentedX() + distribution_for_x(random_engine);
+    const float y = _box.getRepresentedY() + distribution_for_y(random_engine);
 
-  return Shard(x, y, vx, vy, a, av, color);
+    const float angle = distribution_for_angle(random_engine);
+    const float speed = distribution_for_speed(random_engine);
+    const float vx = speed * cos(angle);
+    const float vy = speed * sin(angle);
+
+    const float a = 1.f;
+    const float va = distribution_for_av(random_engine);
+
+    const sf::Color color = _box.getColor();
+
+    data.accessToShards().emplace_back(x, y, vx, vy, a, va, color);
+  }
+}
+
+void sa::LevelSceneProcessHandler::addProfit(const sa::Box& _box)
+{
+  // TODO.
+
+  data.accessToProfits().push_front(Profit{ 100, _box.getRepresentedX() + 0.5f, _box.getRepresentedY() + 0.5f, 0.5f });
 }

@@ -8,7 +8,9 @@ namespace sa
   {
   public:
 
-    Stepper(const ptrdiff_t _x, const ptrdiff_t _y);
+    Stepper(const ptrdiff_t _x,
+            const ptrdiff_t _y,
+            const float _speed);
 
     bool isReadyToStep() const;
     
@@ -35,10 +37,11 @@ namespace sa
     ptrdiff_t source_x;
     ptrdiff_t source_y;
 
-    float progress;
-
     ptrdiff_t destination_x;
     ptrdiff_t destination_y;
+
+    float progress;
+    const float speed;
 
   };
 }

@@ -27,6 +27,7 @@ namespace sa
     void drawBoxes() const;
     void drawDeliveries() const;
     void drawShards() const;
+    void drawProfits() const;
     void drawPlayer() const;
 
   };

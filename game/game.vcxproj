@@ -151,6 +151,7 @@
     <ClCompile Include="source\LevelSceneProcessHandler.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PlayerAnimation.cpp" />
+    <ClCompile Include="source\Profit.cpp" />
     <ClCompile Include="source\Shard.cpp" />
     <ClCompile Include="source\Stepper.cpp" />
     <ClCompile Include="source\Cell.cpp" />
@@ -174,6 +175,7 @@
     <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\PlayerAnimation.hpp" />
     <ClInclude Include="source\PlayerAnimationState.hpp" />
+    <ClInclude Include="source\Profit.hpp" />
     <ClInclude Include="source\Shard.hpp" />
     <ClInclude Include="source\Stepper.hpp" />
     <ClInclude Include="source\Cell.hpp" />
