@@ -30,7 +30,7 @@ namespace sa
     float getRepresentedX() const;
     float getRepresentedY() const;
 
-    void process(const float _dt);
+    void update(const float _dt);
 
   public:
 

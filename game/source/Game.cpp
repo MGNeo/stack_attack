@@ -46,7 +46,7 @@ void sa::Game::play()
         normalized_dt = game_settings.getMaxDt();
       }
 
-      current_scene->process(normalized_dt);
+      current_scene->update(normalized_dt);
 
       render_window.clear();
       current_scene->draw();

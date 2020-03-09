@@ -34,7 +34,7 @@ float sa::Profit::getA() const
 }
 
 
-void sa::Profit::process(const float _dt)
+void sa::Profit::update(const float _dt)
 {
   a -= _dt * va;
   if (a < 0.f)

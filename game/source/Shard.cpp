@@ -33,7 +33,7 @@ float sa::Shard::getA() const
   return a;
 }
 
-void sa::Shard::process(const float _dt)
+void sa::Shard::update(const float _dt)
 {
   x += _dt * vx;
   y += _dt * vy;

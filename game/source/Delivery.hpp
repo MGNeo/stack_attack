@@ -18,7 +18,7 @@ namespace sa
              const sf::Color _color,
              const ptrdiff_t _target);
 
-    void process(const float _dt);
+    void update(const float _dt);
 
     DeliveryDirection getDirection() const;
     sf::Color getColor() const;

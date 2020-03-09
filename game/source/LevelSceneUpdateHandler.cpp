@@ -1,7 +1,7 @@
-#include <LevelSceneProcessHandler.hpp>
+#include <LevelSceneUpdateHandler.hpp>
 
-sa::LevelSceneProcessHandler::LevelSceneProcessHandler(LevelSceneData& _data,
-                                                       const GameSettings& _game_settings)
+sa::LevelSceneUpdateHandler::LevelSceneUpdateHandler(LevelSceneData& _data,
+                                                     const GameSettings& _game_settings)
   :
   NON_MOVABLE_COLOR{ 155, 155, 155, 255 },
   data{ _data },
@@ -10,27 +10,27 @@ sa::LevelSceneProcessHandler::LevelSceneProcessHandler(LevelSceneData& _data,
 {
 }
 
-void sa::LevelSceneProcessHandler::process(const float _dt)
+void sa::LevelSceneUpdateHandler::update(const float _dt)
 {
-  processDeliveries(_dt);
-  processBoxes(_dt);
-  processPlayer(_dt);
-  processShards(_dt);
-  processProfits(_dt);
+  updateDeliveries(_dt);
+  updateBoxes(_dt);
+  updatePlayer(_dt);
+  updateShards(_dt);
+  updateProfits(_dt);
 }
 
-void sa::LevelSceneProcessHandler::processDeliveries(const float _dt)
+void sa::LevelSceneUpdateHandler::updateDeliveries(const float _dt)
 {
   generateDelivery(_dt);
   for (auto& delivery : data.accessToDeliveries())
   {
-    delivery.process(_dt);
+    delivery.update(_dt);
     analyseTargetOfDelivery(delivery);
   }
   checkFinishOfDeliveries();
 }
 
-void sa::LevelSceneProcessHandler::generateDelivery(const float _dt)
+void sa::LevelSceneUpdateHandler::generateDelivery(const float _dt)
 {
   static float timer;
   timer += _dt;
@@ -44,7 +44,7 @@ void sa::LevelSceneProcessHandler::generateDelivery(const float _dt)
   }
 }
 
-void sa::LevelSceneProcessHandler::analyseTargetOfDelivery(Delivery& _delivery)
+void sa::LevelSceneUpdateHandler::analyseTargetOfDelivery(Delivery& _delivery)
 {
   if (_delivery.hasBox() == true)
   {
@@ -87,7 +87,7 @@ void sa::LevelSceneProcessHandler::analyseTargetOfDelivery(Delivery& _delivery)
   }
 }
 
-void sa::LevelSceneProcessHandler::checkFinishOfDeliveries()
+void sa::LevelSceneUpdateHandler::checkFinishOfDeliveries()
 {
   for (auto iterator = data.accessToDeliveries().begin(); iterator != data.accessToDeliveries().end();)
   {
@@ -100,11 +100,11 @@ void sa::LevelSceneProcessHandler::checkFinishOfDeliveries()
   }
 }
 
-void sa::LevelSceneProcessHandler::processBoxes(const float _dt)
+void sa::LevelSceneUpdateHandler::updateBoxes(const float _dt)
 {
   for (auto& box : data.accessToBoxes())
   {
-    box.process(_dt);
+    box.update(_dt);
     boxTriesToStepToDown(box);
   }
   analyseBottomLine();
@@ -112,7 +112,7 @@ void sa::LevelSceneProcessHandler::processBoxes(const float _dt)
   deleteMarkedBoxes();
 }
 
-void sa::LevelSceneProcessHandler::boxTriesToStepToDown(Box& _box)
+void sa::LevelSceneUpdateHandler::boxTriesToStepToDown(Box& _box)
 {
   if (_box.isReadyToStep() == true)
   {
@@ -136,7 +136,7 @@ void sa::LevelSceneProcessHandler::boxTriesToStepToDown(Box& _box)
   }
 }
 
-void sa::LevelSceneProcessHandler::analyseBottomLine()
+void sa::LevelSceneUpdateHandler::analyseBottomLine()
 {
   bool bottom_line_is_filled = true;
 
@@ -162,7 +162,7 @@ void sa::LevelSceneProcessHandler::analyseBottomLine()
   }
 }
 
-void sa::LevelSceneProcessHandler::analyseSectors()
+void sa::LevelSceneUpdateHandler::analyseSectors()
 {
   for (size_t x = 0u; x < data.accessToField().getWidth(); ++x)
   {
@@ -209,7 +209,7 @@ void sa::LevelSceneProcessHandler::analyseSectors()
   }
 }
 
-void sa::LevelSceneProcessHandler::deleteMarkedBoxes()
+void sa::LevelSceneUpdateHandler::deleteMarkedBoxes()
 {
   for (auto iterator = data.accessToBoxes().begin(); iterator != data.accessToBoxes().end();)
   {
@@ -227,7 +227,7 @@ void sa::LevelSceneProcessHandler::deleteMarkedBoxes()
   }
 }
 
-void sa::LevelSceneProcessHandler::processPlayer(const float _dt)
+void sa::LevelSceneUpdateHandler::updatePlayer(const float _dt)
 {
   if (data.accessToPlayer().isReadyToStep() == true)
   {
@@ -262,10 +262,10 @@ void sa::LevelSceneProcessHandler::processPlayer(const float _dt)
       return;
     }
   }
-  data.accessToPlayer().process(_dt);
+  data.accessToPlayer().update(_dt);
 }
 
-bool sa::LevelSceneProcessHandler::playerTriesToStepToLeft()
+bool sa::LevelSceneUpdateHandler::playerTriesToStepToLeft()
 {
   const size_t x = data.accessToPlayer().getSourceX();
   const size_t y = data.accessToPlayer().getSourceY();
@@ -356,7 +356,7 @@ bool sa::LevelSceneProcessHandler::playerTriesToStepToLeft()
   return false;
 }
 
-bool sa::LevelSceneProcessHandler::playerTriesToStepToRight()
+bool sa::LevelSceneUpdateHandler::playerTriesToStepToRight()
 {
   const size_t x = data.accessToPlayer().getSourceX();
   const size_t y = data.accessToPlayer().getSourceY();
@@ -447,7 +447,7 @@ bool sa::LevelSceneProcessHandler::playerTriesToStepToRight()
   return false;
 }
 
-bool sa::LevelSceneProcessHandler::playerTriesToStepToUp()
+bool sa::LevelSceneUpdateHandler::playerTriesToStepToUp()
 {
   const size_t x = data.accessToPlayer().getSourceX();
   const size_t y = data.accessToPlayer().getSourceY();
@@ -482,7 +482,7 @@ bool sa::LevelSceneProcessHandler::playerTriesToStepToUp()
   return false;
 }
 
-bool sa::LevelSceneProcessHandler::playerTriesToStepToDown()
+bool sa::LevelSceneUpdateHandler::playerTriesToStepToDown()
 {
   const size_t x = data.accessToPlayer().getSourceX();
   const size_t y = data.accessToPlayer().getSourceY();
@@ -498,15 +498,15 @@ bool sa::LevelSceneProcessHandler::playerTriesToStepToDown()
   return false;
 }
 
-void sa::LevelSceneProcessHandler::processShards(const float _dt)
+void sa::LevelSceneUpdateHandler::updateShards(const float _dt)
 {
   for (auto& shard : data.accessToShards())
   {
-    shard.process(_dt);
+    shard.update(_dt);
   }
 }
 
-void sa::LevelSceneProcessHandler::deleteDisappearededShards()
+void sa::LevelSceneUpdateHandler::deleteDisappearededShards()
 {
   for (auto iterator = data.accessToShards().begin(); iterator != data.accessToShards().end();)
   {
@@ -520,15 +520,15 @@ void sa::LevelSceneProcessHandler::deleteDisappearededShards()
   }
 }
 
-void sa::LevelSceneProcessHandler::processProfits(const float _dt)
+void sa::LevelSceneUpdateHandler::updateProfits(const float _dt)
 {
   for (auto& profit : data.accessToProfits())
   {
-    profit.process(_dt);
+    profit.update(_dt);
   }
 }
 
-void sa::LevelSceneProcessHandler::deleteDisappearedProfits()
+void sa::LevelSceneUpdateHandler::deleteDisappearedProfits()
 {
   for (auto iterator = data.accessToProfits().begin(); iterator != data.accessToProfits().end();)
   {
@@ -543,7 +543,7 @@ void sa::LevelSceneProcessHandler::deleteDisappearedProfits()
 }
 
 // Generators:
-void sa::LevelSceneProcessHandler::addRandomDelivery()
+void sa::LevelSceneUpdateHandler::addRandomDelivery()
 {
   DeliveryDirection direction{};
   {
@@ -562,7 +562,7 @@ void sa::LevelSceneProcessHandler::addRandomDelivery()
       }
       default:
       {
-        throw std::runtime_error("sa::LevelSceneProcessHandler::addRandomDelivery(), unknown value of DeliveryDirection was found.");
+        throw std::runtime_error("sa::LevelSceneUpdateHandler::addRandomDelivery(), unknown value of DeliveryDirection was found.");
         break;
       }
     }
@@ -591,12 +591,12 @@ void sa::LevelSceneProcessHandler::addRandomDelivery()
   data.accessToDeliveries().emplace_front( direction, speed, color, target );
 }
 
-void sa::LevelSceneProcessHandler::addBox(const sa::Delivery& _delivery)
+void sa::LevelSceneUpdateHandler::addBox(const sa::Delivery& _delivery)
 {
   data.accessToBoxes().emplace_front(_delivery.getTarget(), 0u, game_settings.getStepperSpeed(), _delivery.getColor());
 }
 
-void sa::LevelSceneProcessHandler::addShards(const sa::Box& _box)
+void sa::LevelSceneUpdateHandler::addShards(const sa::Box& _box)
 {
   // TODO: Take this info from game settings.
   std::uniform_real_distribution distribution_for_x{ 0.f, 1.f };
@@ -624,7 +624,7 @@ void sa::LevelSceneProcessHandler::addShards(const sa::Box& _box)
   }
 }
 
-void sa::LevelSceneProcessHandler::addProfit(const sa::Box& _box)
+void sa::LevelSceneUpdateHandler::addProfit(const sa::Box& _box)
 {
   // TODO.
 

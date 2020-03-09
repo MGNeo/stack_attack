@@ -15,7 +15,7 @@ namespace sa
     void runToRight();
     void fall();
 
-    void process(const float _dt);
+    void update(const float _dt);
 
   private:
 

@@ -15,7 +15,7 @@ sa::Delivery::Delivery(const DeliveryDirection _direction,
 {
 }
 
-void sa::Delivery::process(const float _dt)
+void sa::Delivery::update(const float _dt)
 {
   progress += speed * _dt;
   if (progress > 1.f)

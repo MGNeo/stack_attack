@@ -6,14 +6,14 @@
 
 namespace sa
 {
-  class LevelSceneProcessHandler
+  class LevelSceneUpdateHandler
   {
   public:
 
-    LevelSceneProcessHandler(LevelSceneData& _data,
+    LevelSceneUpdateHandler(LevelSceneData& _data,
                              const GameSettings& _game_settings);
 
-    void process(const float _dt);
+    void update(const float _dt);
 
   private:
 
@@ -24,27 +24,27 @@ namespace sa
 
     std::default_random_engine random_engine;
 
-    void processDeliveries(const float _dt);
+    void updateDeliveries(const float _dt);
     void generateDelivery(const float _dt);
     void analyseTargetOfDelivery(Delivery& _delivery);
     void checkFinishOfDeliveries();
 
-    void processBoxes(const float _dt);
+    void updateBoxes(const float _dt);
     void boxTriesToStepToDown(Box& _box);
     void analyseBottomLine();
     void analyseSectors();
     void deleteMarkedBoxes();
 
-    void processPlayer(const float _dt);
+    void updatePlayer(const float _dt);
     bool playerTriesToStepToLeft();
     bool playerTriesToStepToRight();
     bool playerTriesToStepToUp();
     bool playerTriesToStepToDown();
 
-    void processShards(const float _dt);
+    void updateShards(const float _dt);
     void deleteDisappearededShards();
 
-    void processProfits(const float _dt);
+    void updateProfits(const float _dt);
     void deleteDisappearedProfits();
 
     // Generators:

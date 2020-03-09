@@ -21,7 +21,7 @@ namespace sa
     virtual bool isActive() const;
     
     virtual void react(const sf::Event& _event) = 0;
-    virtual void process(const float _dt) = 0;
+    virtual void update(const float _dt) = 0;
     virtual void draw() const = 0;
     
     virtual Uptr getNextScene() = 0;

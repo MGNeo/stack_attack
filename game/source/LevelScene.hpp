@@ -2,7 +2,7 @@
 
 #include <Scene.hpp>
 #include <LevelSceneData.hpp>
-#include <LevelSceneProcessHandler.hpp>
+#include <LevelSceneUpdateHandler.hpp>
 #include <LevelSceneDrawHandler.hpp>
 
 namespace sa
@@ -16,7 +16,7 @@ namespace sa
                const GameSettings& _game_settings);
 
     void react(const sf::Event& _event) override;
-    void process(const float _dt) override;
+    void update(const float _dt) override;
     void draw() const override;
 
     Uptr getNextScene() override;
@@ -25,7 +25,7 @@ namespace sa
 
     LevelSceneData data;
     // TODO: Add ReactHandler if it is necessary.
-    LevelSceneProcessHandler process_handler;
+    LevelSceneUpdateHandler update_handler;
     LevelSceneDrawHandler draw_handler;
   };
 

@@ -14,9 +14,9 @@ sa::Stepper::Stepper(const ptrdiff_t _x,
 {
 }
 
-void sa::Stepper::process(const float _progress)
+void sa::Stepper::update(const float _dt)
 {
-  progress += speed * _progress;
+  progress += speed * _dt;
   if (progress > 1.f)
   {
     progress = 1.f;

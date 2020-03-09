@@ -148,7 +148,7 @@
     <ClCompile Include="source\GameSettings.cpp" />
     <ClCompile Include="source\LevelSceneData.cpp" />
     <ClCompile Include="source\LevelSceneDrawHandler.cpp" />
-    <ClCompile Include="source\LevelSceneProcessHandler.cpp" />
+    <ClCompile Include="source\LevelSceneUpdateHandler.cpp" />
     <ClCompile Include="source\Player.cpp" />
     <ClCompile Include="source\PlayerAnimation.cpp" />
     <ClCompile Include="source\Profit.cpp" />
@@ -171,7 +171,7 @@
     <ClInclude Include="source\GameSettings.hpp" />
     <ClInclude Include="source\LevelSceneData.hpp" />
     <ClInclude Include="source\LevelSceneDrawHandler.hpp" />
-    <ClInclude Include="source\LevelSceneProcessHandler.hpp" />
+    <ClInclude Include="source\LevelSceneUpdateHandler.hpp" />
     <ClInclude Include="source\Player.hpp" />
     <ClInclude Include="source\PlayerAnimation.hpp" />
     <ClInclude Include="source\PlayerAnimationState.hpp" />
